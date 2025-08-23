@@ -32,15 +32,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate Prisma client
-        run: pnpm prisma generate
-
-      - name: Setup Prisma client for TypeScript
-        run: |
-          mkdir -p node_modules/@prisma
-          ln -sfn $(pwd)/generated/prisma node_modules/@prisma/client
-          ls -la node_modules/@prisma/client/
-          echo "Prisma client setup complete"
-
       - name: Run tests
         run: pnpm test
