@@ -7,8 +7,8 @@ on:
   pull_request:
 
 jobs:
-  test:
-    name: Run pnpm test
+  lint:
+    name: Run pnpm lint
     runs-on: ubuntu-latest
 
     steps:
@@ -35,19 +35,12 @@ jobs:
       - name: Generate Prisma client
         run: pnpm prisma generate
 
-      - name: Create symlink for Prisma client
+      - name: Setup Prisma client for TypeScript
         run: |
           mkdir -p node_modules/@prisma
-          ln -sf $(pwd)/generated/prisma node_modules/@prisma/client
-          echo "Symlink created successfully"
-          ls -la node_modules/@prisma/
-
-      - name: Verify Prisma client is accessible
-        run: |
-          echo "Checking if PrismaClient exists..."
-          node -e "console.log('PrismaClient available:', require('@prisma/client').PrismaClient ? 'YES' : 'NO')"
-          echo "Generated files:"
-          ls -la generated/prisma/
+          ln -sfn $(pwd)/generated/prisma node_modules/@prisma/client
+          ls -la node_modules/@prisma/client/
+          echo "Prisma client setup complete"
 
       - name: Run tests
         run: pnpm test
