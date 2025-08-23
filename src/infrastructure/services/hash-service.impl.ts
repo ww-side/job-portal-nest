@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
-import { HashService } from '~/core/services/hash-service';
+
+import type { HashService } from '~/core/services/hash-service';
 
 export class HashServiceImpl implements HashService {
   async hash(value: string, saltOrRounds: number): Promise<string> {

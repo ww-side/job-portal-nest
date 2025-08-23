@@ -1,16 +1,21 @@
+import { Cache } from 'cache-manager';
+
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
+
 import { LoginUserUseCase } from '~/application/auth/login.use-case';
 import { RefreshTokenUseCase } from '~/application/auth/refresh-token.use-case';
+
 import { HashServiceImpl } from '~/infrastructure/services/hash-service.impl';
 import { TokenServiceImpl } from '~/infrastructure/services/token-service.impl';
-import { CacheServiceImpl } from '~/framework/cache/cache-service.impl';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
 import { PrismaUserRepository } from '~/infrastructure/user/user.repository.impl';
-import { DbService } from '../db/db.service';
+
+import { CacheServiceImpl } from '~/framework/cache/cache-service.impl';
 import { DbModule } from '~/framework/db/db.module';
+
+import { DbService } from '../db/db.service';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 
 @Module({
   imports: [DbModule],
