@@ -1,0 +1,46 @@
+name: Tests Run
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  lint:
+    name: Run pnpm lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.10.0 --activate
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.14'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm@10.10.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm prisma generate
+
+      - name: Setup Prisma client for TypeScript
+        run: |
+          mkdir -p node_modules/@prisma
+          ln -sfn $(pwd)/generated/prisma node_modules/@prisma/client
+          ls -la node_modules/@prisma/client/
+          echo "Prisma client setup complete"
+
+      - name: Run tests
+        run: pnpm test
