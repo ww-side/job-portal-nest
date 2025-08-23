@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { DbModule } from '~/infrastructure/db/db.module';
+import { DbModule } from '~/framework/db/db.module';
 import { UsersModule } from '~/framework/user/user.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
+import { AuthModule } from './framework/auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import * as redisStore from 'cache-manager-redis-store';
       isGlobal: true,
     }),
     UsersModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
