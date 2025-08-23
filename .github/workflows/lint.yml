@@ -35,8 +35,5 @@ jobs:
       - name: Generate Prisma client
         run: npx prisma generate
 
-      - name: Debug prisma client
-        run: ls -R generated || echo "generated not found"
-
       - name: Run lint
         run: pnpm lint
