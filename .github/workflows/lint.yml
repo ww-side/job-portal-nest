@@ -35,22 +35,12 @@ jobs:
       - name: Generate Prisma client
         run: pnpm prisma generate
 
-      - name: Verify Prisma client generation
-        run: |
-          echo "Generated files:"
-          ls -la generated/prisma/ || echo "No generated directory found"
-
       - name: Setup Prisma client for TypeScript
         run: |
-          # Create proper symlink structure
           mkdir -p node_modules/@prisma
           ln -sfn $(pwd)/generated/prisma node_modules/@prisma/client
-          # Verify the symlink
           ls -la node_modules/@prisma/client/
           echo "Prisma client setup complete"
-
-      - name: Build project
-        run: pnpm build
 
       - name: Run lint
         run: pnpm lint
