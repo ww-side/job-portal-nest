@@ -1,4 +1,4 @@
-name: Test Run
+name: Tests Run
 
 on:
   push:
@@ -39,8 +39,15 @@ jobs:
         run: |
           mkdir -p node_modules/@prisma
           ln -sf $(pwd)/generated/prisma node_modules/@prisma/client
+          echo "Symlink created successfully"
+          ls -la node_modules/@prisma/
+
+      - name: Verify Prisma client is accessible
+        run: |
+          echo "Checking if PrismaClient exists..."
+          node -e "console.log('PrismaClient available:', require('@prisma/client').PrismaClient ? 'YES' : 'NO')"
+          echo "Generated files:"
+          ls -la generated/prisma/
 
       - name: Run tests
         run: pnpm test
-        env:
-          NODE_ENV: test
