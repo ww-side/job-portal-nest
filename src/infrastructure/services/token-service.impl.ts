@@ -1,6 +1,7 @@
-import { TokenService } from '~/core/services/token-service';
+import type { SignOptions } from 'jsonwebtoken';
 import * as jwt from 'jsonwebtoken';
-import { SignOptions } from 'jsonwebtoken';
+
+import type { TokenService } from '~/core/services/token-service';
 
 export class TokenServiceImpl implements TokenService<{ id: number }> {
   private readonly secret = process.env.JWT_SECRET!;

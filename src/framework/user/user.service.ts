@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+
 import { CreateUserUseCase } from '~/application/user/create-user.use-case';
+
 import { CreateUserDTO } from '~/framework/user/dto/create-user';
 
 @Injectable()

@@ -1,7 +1,9 @@
 import { Cache } from 'cache-manager';
-import { CacheService } from '~/core/services/cache-service';
-import { Inject, Injectable } from '@nestjs/common';
+
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable } from '@nestjs/common';
+
+import { CacheService } from '~/core/services/cache-service';
 
 @Injectable()
 export class CacheServiceImpl implements CacheService<string> {

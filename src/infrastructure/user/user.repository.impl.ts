@@ -1,6 +1,10 @@
-import { UserRepository, CreateUserData } from '~/core/user/user.repository';
 import { UserEntity } from '~/core/user/user.entity';
-import { DbService } from '~/framework/db/db.service';
+import type {
+  CreateUserData,
+  UserRepository,
+} from '~/core/user/user.repository';
+
+import type { DbService } from '~/framework/db/db.service';
 
 export class PrismaUserRepository implements UserRepository {
   constructor(private readonly db: DbService) {}
