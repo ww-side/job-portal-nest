@@ -2,9 +2,10 @@
   "name": "job-portal-nest",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "ww-side",
   "private": true,
   "license": "UNLICENSED",
+  "packageManager": "pnpm@10.10.0",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
