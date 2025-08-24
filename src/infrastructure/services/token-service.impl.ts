@@ -1,9 +1,9 @@
 import type { SignOptions } from 'jsonwebtoken';
 import * as jwt from 'jsonwebtoken';
 
-import type { TokenService } from '~/core/services/token-service';
+import type { TokenPayload, TokenService } from '~/core/services/token-service';
 
-export class TokenServiceImpl implements TokenService<{ id: number }> {
+export class TokenServiceImpl implements TokenService {
   private readonly secret = process.env.JWT_SECRET!;
 
   sign(payload: object, expiresIn: string): string {
@@ -11,13 +11,13 @@ export class TokenServiceImpl implements TokenService<{ id: number }> {
     return jwt.sign(payload, this.secret, options);
   }
 
-  verify(token: string): { id: number } {
+  verify(token: string): TokenPayload {
     const decoded = jwt.verify(token, this.secret);
 
     if (typeof decoded === 'string') {
       throw new Error('Invalid token payload');
     }
 
-    return decoded as { id: number };
+    return decoded as TokenPayload;
   }
 }

@@ -1,5 +1,4 @@
-import { ConflictException } from '@nestjs/common';
-
+import { ConflictException } from '~/core/errors/conflict';
 import { HashService } from '~/core/services/hash-service';
 import { UserEntity } from '~/core/user/user.entity';
 import { CreateUserData, UserRepository } from '~/core/user/user.repository';
