@@ -1,6 +1,7 @@
 import { UserEntity } from '~/core/user/user.entity';
 import type {
   CreateUserData,
+  UpdateUserData,
   UserRepository,
 } from '~/core/user/user.repository';
 
@@ -62,6 +63,53 @@ export class PrismaUserRepository implements UserRepository {
   async create(data: CreateUserData): Promise<UserEntity> {
     const user = await this.db.user.create({
       data,
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        phone: true,
+        roleId: true,
+        isBanned: true,
+        createdAt: true,
+        updatedAt: true,
+        password: true,
+      },
+    });
+
+    return new UserEntity({
+      ...user,
+      phone: user.phone ?? '',
+    });
+  }
+
+  async update(id: string, data: UpdateUserData): Promise<UserEntity> {
+    const user = await this.db.user.update({
+      where: { id },
+      data,
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        phone: true,
+        roleId: true,
+        isBanned: true,
+        createdAt: true,
+        updatedAt: true,
+        password: true,
+      },
+    });
+
+    return new UserEntity({
+      ...user,
+      phone: user.phone ?? '',
+    });
+  }
+
+  async delete(id: string): Promise<UserEntity> {
+    const user = await this.db.user.delete({
+      where: { id },
       select: {
         id: true,
         email: true,

@@ -7,7 +7,7 @@ import { TokenService } from '~/core/services/token-service';
 export class RefreshTokenUseCase {
   constructor(
     private readonly cacheService: CacheService<string>,
-    private readonly tokenService: TokenService<{ id: number }>,
+    private readonly tokenService: TokenService,
     private readonly hashService: HashService,
   ) {}
 

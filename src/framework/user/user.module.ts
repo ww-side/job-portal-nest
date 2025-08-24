@@ -3,9 +3,9 @@ import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 
-import { LoginUserUseCase } from '~/application/auth/login.use-case';
-import { RefreshTokenUseCase } from '~/application/auth/refresh-token.use-case';
 import { CreateUserUseCase } from '~/application/user/create-user.use-case';
+import { DeleteUserUseCase } from '~/application/user/delete-user.use-case';
+import { UpdateUserUseCase } from '~/application/user/update-user.use-case';
 
 import { HashServiceImpl } from '~/infrastructure/services/hash-service.impl';
 import { TokenServiceImpl } from '~/infrastructure/services/token-service.impl';
@@ -15,6 +15,7 @@ import { CacheServiceImpl } from '~/framework/cache/cache-service.impl';
 import { DbModule } from '~/framework/db/db.module';
 
 import { DbService } from '../db/db.service';
+import { JwtAuthGuard } from '../shared/guards/jwt-auth';
 import { UsersController } from './user.controller';
 import { UsersService } from './user.service';
 
@@ -23,6 +24,7 @@ import { UsersService } from './user.service';
   controllers: [UsersController],
   providers: [
     UsersService,
+    JwtAuthGuard,
     {
       provide: PrismaUserRepository,
       useFactory: (db: DbService) => new PrismaUserRepository(db),
@@ -48,28 +50,15 @@ import { UsersService } from './user.service';
       inject: [PrismaUserRepository, HashServiceImpl],
     },
     {
-      provide: LoginUserUseCase,
-      useFactory: (
-        repo: PrismaUserRepository,
-        cache: CacheServiceImpl,
-        tokenService: TokenServiceImpl,
-        hash: HashServiceImpl,
-      ) => new LoginUserUseCase(repo, cache, tokenService, hash),
-      inject: [
-        PrismaUserRepository,
-        CacheServiceImpl,
-        TokenServiceImpl,
-        HashServiceImpl,
-      ],
+      provide: UpdateUserUseCase,
+      useFactory: (repo: PrismaUserRepository, hash: HashServiceImpl) =>
+        new UpdateUserUseCase(repo, hash),
+      inject: [PrismaUserRepository, HashServiceImpl],
     },
     {
-      provide: RefreshTokenUseCase,
-      useFactory: (
-        cache: CacheServiceImpl,
-        tokenService: TokenServiceImpl,
-        hash: HashServiceImpl,
-      ) => new RefreshTokenUseCase(cache, tokenService, hash),
-      inject: [CacheServiceImpl, TokenServiceImpl, HashServiceImpl],
+      provide: DeleteUserUseCase,
+      useFactory: (repo: PrismaUserRepository) => new DeleteUserUseCase(repo),
+      inject: [PrismaUserRepository],
     },
   ],
   exports: [PrismaUserRepository],
