@@ -4,6 +4,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 
 import { LoginUserUseCase } from '~/application/auth/login.use-case';
+import { LogoutUserUseCase } from '~/application/auth/logout.use-case';
 import { RefreshTokenUseCase } from '~/application/auth/refresh-token.use-case';
 
 import { HashServiceImpl } from '~/infrastructure/services/hash-service.impl';
@@ -39,6 +40,12 @@ import { AuthService } from './auth.service';
       provide: CacheServiceImpl,
       useFactory: (cacheManager: Cache) => new CacheServiceImpl(cacheManager),
       inject: [CACHE_MANAGER],
+    },
+    {
+      provide: LogoutUserUseCase,
+      useFactory: (cache: CacheServiceImpl, tokenService: TokenServiceImpl) =>
+        new LogoutUserUseCase(cache, tokenService),
+      inject: [CacheServiceImpl, TokenServiceImpl],
     },
     {
       provide: LoginUserUseCase,
