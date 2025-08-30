@@ -1,3 +1,4 @@
+import { UnauthorizedException } from '~/core/errors/unauthorized';
 import { CacheService } from '~/core/services/cache-service';
 import { HashService } from '~/core/services/hash-service';
 import { TokenService } from '~/core/services/token-service';
@@ -14,13 +15,13 @@ export class LoginUserUseCase {
   async execute(email: string, password: string) {
     const user = await this.userRepository.findByEmail(email);
 
-    if (!user) throw new Error('User not found');
+    if (!user) throw new UnauthorizedException('User not found');
 
     const isPasswordValid = await this.hashService.compare(
       password,
       user.password,
     );
-    if (!isPasswordValid) throw new Error('Invalid password');
+    if (!isPasswordValid) throw new UnauthorizedException('Invalid password');
 
     const accessToken = this.tokenService.sign({ id: user.id }, '15m');
     const refreshToken = this.tokenService.sign({ id: user.id }, '7d');
