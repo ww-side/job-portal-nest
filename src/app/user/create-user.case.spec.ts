@@ -3,7 +3,7 @@ import type { HashService } from '~/core/services/hash-service';
 import { UserEntity } from '~/core/user/user.entity';
 import type { UserRepository } from '~/core/user/user.repository';
 
-import { CreateUserUseCase } from './create-user.use-case';
+import { CreateUserUseCase } from './create-user.case';
 
 describe('CreateUserUseCase', () => {
   let createUserUseCase: CreateUserUseCase;

@@ -4,7 +4,7 @@ import type { CacheService } from '~/core/services/cache-service';
 import type { HashService } from '~/core/services/hash-service';
 import type { TokenService } from '~/core/services/token-service';
 
-import { RefreshTokenUseCase } from './refresh-token.use-case';
+import { RefreshTokenUseCase } from './refresh-token.case';
 
 describe('RefreshTokenUseCase', () => {
   let refreshTokenUseCase: RefreshTokenUseCase;

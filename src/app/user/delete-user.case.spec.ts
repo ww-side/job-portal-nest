@@ -2,7 +2,7 @@ import { NotFoundException } from '~/core/errors/not-found';
 import { UserEntity } from '~/core/user/user.entity';
 import type { UserRepository } from '~/core/user/user.repository';
 
-import { DeleteUserUseCase } from './delete-user.use-case';
+import { DeleteUserUseCase } from './delete-user.case';
 
 describe('DeleteUserUseCase', () => {
   let deleteUserUseCase: DeleteUserUseCase;

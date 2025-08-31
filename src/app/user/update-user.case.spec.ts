@@ -4,7 +4,7 @@ import type { HashService } from '~/core/services/hash-service';
 import { UserEntity } from '~/core/user/user.entity';
 import type { UserRepository } from '~/core/user/user.repository';
 
-import { UpdateUserUseCase } from './update-user.use-case';
+import { UpdateUserUseCase } from './update-user.case';
 
 describe('UpdateUserUseCase', () => {
   let updateUserUseCase: UpdateUserUseCase;
