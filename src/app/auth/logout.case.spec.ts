@@ -2,7 +2,7 @@ import { UnauthorizedException } from '~/core/errors/unauthorized';
 import type { CacheService } from '~/core/services/cache-service';
 import type { TokenService } from '~/core/services/token-service';
 
-import { LogoutUserUseCase } from './logout.use-case';
+import { LogoutUserUseCase } from './logout.case';
 
 describe('LogoutUserUseCase', () => {
   let logoutUserUseCase: LogoutUserUseCase;

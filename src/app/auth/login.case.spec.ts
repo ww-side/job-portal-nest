@@ -5,7 +5,7 @@ import type { TokenService } from '~/core/services/token-service';
 import { UserEntity } from '~/core/user/user.entity';
 import type { UserRepository } from '~/core/user/user.repository';
 
-import { LoginUserUseCase } from './login.use-case';
+import { LoginUserUseCase } from './login.case';
 
 describe('LoginUserUseCase', () => {
   let loginUserUseCase: LoginUserUseCase;

@@ -3,10 +3,6 @@ import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 
-import { CreateUserUseCase } from '~/application/user/create-user.use-case';
-import { DeleteUserUseCase } from '~/application/user/delete-user.use-case';
-import { UpdateUserUseCase } from '~/application/user/update-user.use-case';
-
 import { HashServiceImpl } from '~/infrastructure/services/hash-service.impl';
 import { TokenServiceImpl } from '~/infrastructure/services/token-service.impl';
 import { PrismaUserRepository } from '~/infrastructure/user/user.repository.impl';
@@ -18,6 +14,9 @@ import { DbService } from '../db/db.service';
 import { JwtAuthGuard } from '../shared/guards/jwt-auth';
 import { UsersController } from './user.controller';
 import { UsersService } from './user.service';
+import { CreateUserUseCase } from '~/app/user/create-user.case';
+import { DeleteUserUseCase } from '~/app/user/delete-user.case';
+import { UpdateUserUseCase } from '~/app/user/update-user.case';
 
 @Module({
   imports: [DbModule],
