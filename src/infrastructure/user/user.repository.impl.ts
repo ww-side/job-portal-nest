@@ -10,7 +10,7 @@ import type { DbService } from '~/framework/db/db.service';
 export class PrismaUserRepository implements UserRepository {
   constructor(private readonly db: DbService) {}
 
-  async findByEmail(email: string): Promise<UserEntity | null> {
+  async findByEmail(email: string) {
     const user = await this.db.user.findUnique({
       where: { email },
       select: {
@@ -35,7 +35,7 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async findById(id: string): Promise<UserEntity | null> {
+  async findById(id: string) {
     const user = await this.db.user.findUnique({
       where: { id },
       select: {
@@ -60,7 +60,7 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async create(data: CreateUserData): Promise<UserEntity> {
+  async create(data: CreateUserData) {
     const user = await this.db.user.create({
       data,
       select: {
@@ -83,7 +83,7 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async update(id: string, data: UpdateUserData): Promise<UserEntity> {
+  async update(id: string, data: UpdateUserData) {
     const user = await this.db.user.update({
       where: { id },
       data,
@@ -107,7 +107,7 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async delete(id: string): Promise<UserEntity> {
+  async delete(id: string) {
     const user = await this.db.user.delete({
       where: { id },
       select: {

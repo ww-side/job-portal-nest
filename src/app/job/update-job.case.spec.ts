@@ -15,23 +15,24 @@ describe('UpdateJobUseCase', () => {
 
   beforeEach(() => {
     jobRepository = {
-      findById: jest.fn(),
+      get: jest.fn(),
       update: jest.fn(),
       create: jest.fn(),
-      findMany: jest.fn(),
+      getAll: jest.fn(),
       delete: jest.fn(),
       addSkill: jest.fn(),
       removeSkill: jest.fn(),
     };
 
     companyRepository = {
-      findById: jest.fn(),
+      get: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
-      findByOwnerId: jest.fn(),
+      getByOwnerId: jest.fn(),
       addRecruiter: jest.fn(),
       removeRecruiter: jest.fn(),
+      getAll: jest.fn(),
     };
 
     updateJobUseCase = new UpdateJobUseCase({
@@ -90,8 +91,8 @@ describe('UpdateJobUseCase', () => {
       removeSkill: jest.fn(),
     };
 
-    jobRepository.findById.mockResolvedValue(job);
-    companyRepository.findById.mockResolvedValue(company);
+    jobRepository.get.mockResolvedValue(job);
+    companyRepository.get.mockResolvedValue(company);
     jobRepository.update.mockResolvedValue(updatedJob);
 
     const result = await updateJobUseCase.execute(
@@ -101,14 +102,14 @@ describe('UpdateJobUseCase', () => {
     );
 
     expect(result).toEqual(updatedJob);
-    expect(jobRepository.findById.mock.calls[0][0]).toBe('job-1');
-    expect(companyRepository.findById.mock.calls[0][0]).toBe('company-1');
+    expect(jobRepository.get.mock.calls[0][0]).toBe('job-1');
+    expect(companyRepository.get.mock.calls[0][0]).toBe('company-1');
     expect(jobRepository.update.mock.calls[0][0]).toBe('job-1');
     expect(jobRepository.update.mock.calls[0][1]).toEqual(updateData);
   });
 
   it('throws NotFoundException if job does not exist', async () => {
-    jobRepository.findById.mockResolvedValue(null);
+    jobRepository.get.mockResolvedValue(null);
 
     const updateData: UpdateJobData = {
       title: 'New Title',
@@ -138,8 +139,8 @@ describe('UpdateJobUseCase', () => {
       removeSkill: jest.fn(),
     };
 
-    jobRepository.findById.mockResolvedValue(job);
-    companyRepository.findById.mockResolvedValue(null);
+    jobRepository.get.mockResolvedValue(job);
+    companyRepository.get.mockResolvedValue(null);
 
     const updateData: UpdateJobData = {
       title: 'New Title',
@@ -181,8 +182,8 @@ describe('UpdateJobUseCase', () => {
       removeSkill: jest.fn(),
     };
 
-    jobRepository.findById.mockResolvedValue(job);
-    companyRepository.findById.mockResolvedValue(company);
+    jobRepository.get.mockResolvedValue(job);
+    companyRepository.get.mockResolvedValue(company);
 
     const updateData: UpdateJobData = {
       title: 'New Title',

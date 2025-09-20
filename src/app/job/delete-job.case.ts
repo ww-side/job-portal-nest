@@ -1,7 +1,6 @@
 import { CompanyRepository } from '~/core/company/company.repository';
 import { ForbiddenException } from '~/core/errors/forbidden';
 import { NotFoundException } from '~/core/errors/not-found';
-import { JobEntity } from '~/core/job/job.entity';
 import type { JobRepository } from '~/core/job/job.repository';
 
 interface DeleteJobUseCaseDeps {
@@ -12,16 +11,16 @@ interface DeleteJobUseCaseDeps {
 export class DeleteJobUseCase {
   constructor(private readonly deps: DeleteJobUseCaseDeps) {}
 
-  async execute(jobId: string, userId: string): Promise<JobEntity> {
+  async execute(jobId: string, userId: string) {
     const { jobRepository, companyRepository } = this.deps;
 
-    const job = await jobRepository.findById(jobId);
+    const job = await jobRepository.get(jobId);
 
     if (!job) {
       throw new NotFoundException('Job not found');
     }
 
-    const company = await companyRepository.findById(job.companyId);
+    const company = await companyRepository.get(job.companyId);
 
     if (!company) {
       throw new NotFoundException('Company not found');

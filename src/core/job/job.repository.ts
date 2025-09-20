@@ -24,8 +24,8 @@ export interface UpdateJobData {
 }
 
 export interface JobRepository {
-  findById(id: string): Promise<JobEntity | null>;
-  findMany(options?: {
+  get(id: string): Promise<JobEntity | null>;
+  getAll(options?: {
     ids?: string[];
     companyId?: string;
     page?: number;

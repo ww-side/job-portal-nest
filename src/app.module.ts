@@ -4,7 +4,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 
 import { AuthModule } from '~/framework/auth/auth.module';
-import { CompanyModule } from '~/framework/companies/companies.module';
+import { CompaniesModule } from '~/framework/companies/companies.module';
 import { DbModule } from '~/framework/db/db.module';
 import { JobsModule } from '~/framework/jobs/jobs.module';
 import { UsersModule } from '~/framework/users/users.module';
@@ -22,7 +22,7 @@ import { UsersModule } from '~/framework/users/users.module';
     }),
     UsersModule,
     AuthModule,
-    CompanyModule,
+    CompaniesModule,
     JobsModule,
   ],
 })

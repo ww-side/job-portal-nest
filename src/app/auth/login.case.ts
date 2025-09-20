@@ -13,7 +13,7 @@ export class LoginUserUseCase {
   ) {}
 
   async execute(email: string, password: string) {
-    const user = await this.userRepository.findByEmail(email);
+    const user = await this.userRepository.getByEmail(email);
 
     if (!user) throw new UnauthorizedException('User not found');
 

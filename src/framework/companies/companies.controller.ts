@@ -2,31 +2,54 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
-import { CurrentUserId } from '../shared/decorators/current-user-id';
-import { JwtAuthGuard } from '../shared/guards/jwt-auth';
+import { CurrentUserId } from '~/framework/shared/decorators/current-user-id';
+import { JwtAuthGuard } from '~/framework/shared/guards/jwt-auth';
+
 import {
   CreateCompanyDoc,
   DeleteCompanyDoc,
   UpdateCompanyDoc,
 } from './companies.docs';
-import { CompanyService } from './companies.service';
+import { CompaniesService } from './companies.service';
 import { CreateCompanyDTO, UpdateCompanyDTO } from './dto';
 
-@Controller('company')
+@Controller('companies')
 @UseGuards(JwtAuthGuard)
-export class CompanyController {
-  constructor(private readonly companyService: CompanyService) {}
+export class CompaniesController {
+  constructor(private readonly companiesService: CompaniesService) {}
+
+  @Get(':id')
+  async get(@Param('id') id: string) {
+    return this.companiesService.get(id);
+  }
+
+  @Get()
+  async getAll(
+    @Query('name') nameContains?: string,
+    @Query('ownerId') ownerId?: string,
+    @Query('page') page?: number,
+    @Query('pageSize') pageSize?: number,
+  ) {
+    return this.companiesService.getAll({
+      nameContains,
+      ownerId,
+      page,
+      pageSize,
+    });
+  }
 
   @Post()
   @CreateCompanyDoc()
   async create(@CurrentUserId() id: string, @Body() dto: CreateCompanyDTO) {
-    return this.companyService.create({ ...dto, ownerId: id });
+    return this.companiesService.create({ ...dto, ownerId: id });
   }
 
   @Patch(':id')
@@ -36,12 +59,12 @@ export class CompanyController {
     @Param('id') id: string,
     @Body() dto: UpdateCompanyDTO,
   ) {
-    return this.companyService.update(id, { ...dto, ownerId });
+    return this.companiesService.update(id, { ...dto, ownerId });
   }
 
   @Delete(':id')
   @DeleteCompanyDoc()
   async delete(@CurrentUserId() ownerId: string, @Param('id') id: string) {
-    return this.companyService.delete({ companyId: id, ownerId });
+    return this.companiesService.delete({ companyId: id, ownerId });
   }
 }

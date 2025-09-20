@@ -11,13 +11,14 @@ describe('RemoveRecruiterUseCase', () => {
 
   beforeEach(() => {
     companyRepository = {
-      findById: jest.fn(),
+      get: jest.fn(),
       addRecruiter: jest.fn(),
       removeRecruiter: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
-      findByOwnerId: jest.fn(),
+      getByOwnerId: jest.fn(),
+      getAll: jest.fn(),
     };
 
     useCase = new RemoveRecruiterUseCase(companyRepository);
@@ -37,7 +38,7 @@ describe('RemoveRecruiterUseCase', () => {
       updatedAt: new Date(),
     });
 
-    companyRepository.findById.mockResolvedValue(existingCompany);
+    companyRepository.get.mockResolvedValue(existingCompany);
     companyRepository.removeRecruiter.mockImplementation(async () => {
       return await Promise.resolve(
         new CompanyEntity({
@@ -51,13 +52,13 @@ describe('RemoveRecruiterUseCase', () => {
 
     const result = await useCase.execute(companyId, userId, requesterId);
 
-    expect(companyRepository.findById.mock.calls[0][0]).toBe(companyId);
+    expect(companyRepository.get.mock.calls[0][0]).toBe(companyId);
     expect(companyRepository.removeRecruiter.mock.calls[0][0]).toBe(companyId);
     expect(result.recruiterIds).not.toContain(userId);
   });
 
   it('throws NotFoundException if company does not exist', async () => {
-    companyRepository.findById.mockResolvedValue(null);
+    companyRepository.get.mockResolvedValue(null);
 
     await expect(
       useCase.execute('company-123', 'user-456', 'owner-123'),
@@ -77,7 +78,7 @@ describe('RemoveRecruiterUseCase', () => {
       updatedAt: new Date(),
     });
 
-    companyRepository.findById.mockResolvedValue(existingCompany);
+    companyRepository.get.mockResolvedValue(existingCompany);
 
     await expect(
       useCase.execute(companyId, 'user-456', 'other-user-999'),

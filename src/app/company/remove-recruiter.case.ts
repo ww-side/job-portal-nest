@@ -6,7 +6,7 @@ export class RemoveRecruiterUseCase {
   constructor(private readonly companyRepository: CompanyRepository) {}
 
   async execute(companyId: string, userId: string, requesterId: string) {
-    const company = await this.companyRepository.findById(companyId);
+    const company = await this.companyRepository.get(companyId);
 
     if (!company) {
       throw new NotFoundException('Company not found');

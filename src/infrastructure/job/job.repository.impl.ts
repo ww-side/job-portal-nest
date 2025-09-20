@@ -7,15 +7,14 @@ import {
   UpdateJobData,
 } from '~/core/job/job.repository';
 
-import type { DbService } from '~/framework/db/db.service';
+import { createPaginatedResponse, getPagination } from '~/app/utils/pagination';
 
-const DEFAULT_PAGE = 1;
-const DEFAULT_PAGE_SIZE = 20;
+import type { DbService } from '~/framework/db/db.service';
 
 export class JobRepositoryImpl implements JobRepository {
   constructor(private readonly db: DbService) {}
 
-  async findById(id: string): Promise<JobEntity | null> {
+  async get(id: string) {
     const job = await this.db.job.findUnique({ where: { id } });
     if (!job) return null;
 
@@ -35,38 +34,23 @@ export class JobRepositoryImpl implements JobRepository {
     });
   }
 
-  async findMany(options?: {
+  async getAll(options?: {
     ids?: string[];
     companyId?: string;
     page?: number;
     pageSize?: number;
-  }): Promise<{
-    data: JobEntity[];
-    totalItems: number;
-    totalPages: number;
-    currentPage: number;
-    pageSize: number;
-  }> {
+  }) {
     const where: Prisma.JobWhereInput = {};
     if (options?.ids) where.id = { in: options.ids };
     if (options?.companyId) where.companyId = options.companyId;
 
-    const page =
-      options?.page && options.page > 0 ? options.page : DEFAULT_PAGE;
-    const pageSize =
-      options?.pageSize && options.pageSize > 0
-        ? options.pageSize
-        : DEFAULT_PAGE_SIZE;
-    const skip = (page - 1) * pageSize;
-    const take = pageSize;
+    const { page, pageSize, skip, take } = getPagination(options);
 
-    // Count total items matching the filter
     const totalItems = await this.db.job.count({ where });
-    const totalPages = Math.ceil(totalItems / pageSize);
 
     const jobs = await this.db.job.findMany({ where, skip, take });
 
-    const items = jobs.map(
+    const data = jobs.map(
       (job) =>
         new JobEntity({
           id: job.id,
@@ -84,16 +68,10 @@ export class JobRepositoryImpl implements JobRepository {
         }),
     );
 
-    return {
-      data: items.length ? items : [],
-      totalItems,
-      totalPages,
-      currentPage: page,
-      pageSize,
-    };
+    return createPaginatedResponse({ items: data, totalItems, page, pageSize });
   }
 
-  async create(data: CreateJobData): Promise<JobEntity> {
+  async create(data: CreateJobData) {
     const job = await this.db.job.create({
       data: {
         title: data.title,
@@ -124,7 +102,7 @@ export class JobRepositoryImpl implements JobRepository {
     });
   }
 
-  async update(id: string, data: UpdateJobData): Promise<JobEntity> {
+  async update(id: string, data: UpdateJobData) {
     const job = await this.db.job.update({
       where: { id },
       data: {
@@ -155,7 +133,7 @@ export class JobRepositoryImpl implements JobRepository {
     });
   }
 
-  async delete(id: string): Promise<JobEntity> {
+  async delete(id: string) {
     const job = await this.db.job.delete({ where: { id } });
 
     return new JobEntity({
@@ -174,7 +152,7 @@ export class JobRepositoryImpl implements JobRepository {
     });
   }
 
-  async addSkill(jobId: string, skill: string): Promise<JobEntity> {
+  async addSkill(jobId: string, skill: string) {
     const job = await this.db.job.update({
       where: { id: jobId },
       data: { skills: { push: skill } },
@@ -196,7 +174,7 @@ export class JobRepositoryImpl implements JobRepository {
     });
   }
 
-  async removeSkill(jobId: string, skill: string): Promise<JobEntity> {
+  async removeSkill(jobId: string, skill: string) {
     const currentJob = await this.db.job.findUnique({ where: { id: jobId } });
     if (!currentJob) throw new Error('Job not found');
 

@@ -10,8 +10,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { CurrentUserId } from '../shared/decorators/current-user-id';
-import { JwtAuthGuard } from '../shared/guards/jwt-auth';
+import { CurrentUserId } from '~/framework/shared/decorators/current-user-id';
+import { JwtAuthGuard } from '~/framework/shared/guards/jwt-auth';
+
 import { CreateJobDto, UpdateJobDTO } from './dto';
 import { JobsService } from './jobs.service';
 

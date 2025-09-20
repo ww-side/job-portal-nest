@@ -37,7 +37,7 @@ export default tseslint.config(
             ['^@?\\w'],
             ['^@nestjs'],
             ['^~/core'],
-            ['^~/application'],
+            ['^~/app'],
             ['^~/infrastructure'],
             ['^~/framework'],
             ['^$'],

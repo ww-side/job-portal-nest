@@ -13,13 +13,14 @@ describe('UpdateCompanyUseCase', () => {
 
   beforeEach(() => {
     companyRepository = {
-      findById: jest.fn(),
-      findByOwnerId: jest.fn(),
+      get: jest.fn(),
+      getByOwnerId: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
       addRecruiter: jest.fn(),
       removeRecruiter: jest.fn(),
+      getAll: jest.fn(),
     };
 
     useCase = new UpdateCompanyUseCase(companyRepository);
@@ -42,7 +43,7 @@ describe('UpdateCompanyUseCase', () => {
       ownerId: 'owner-123',
     };
 
-    companyRepository.findById.mockResolvedValue(existingCompany);
+    companyRepository.get.mockResolvedValue(existingCompany);
     companyRepository.update.mockImplementation(async (_, data) => {
       return await Promise.resolve(
         new CompanyEntity({
@@ -55,7 +56,7 @@ describe('UpdateCompanyUseCase', () => {
 
     const updatedCompany = await useCase.execute(companyId, updateData);
 
-    expect(companyRepository.findById.mock.calls[0][0]).toBe(companyId);
+    expect(companyRepository.get.mock.calls[0][0]).toBe(companyId);
     expect(companyRepository.update.mock.calls[0][0]).toBe(companyId);
     expect(updatedCompany.name).toBe('New Name');
     expect(updatedCompany.description).toBe('Updated description');
@@ -63,7 +64,7 @@ describe('UpdateCompanyUseCase', () => {
 
   it('throws NotFoundException if company does not exist', async () => {
     const companyId = 'company-123';
-    companyRepository.findById.mockResolvedValue(null);
+    companyRepository.get.mockResolvedValue(null);
 
     await expect(
       useCase.execute(companyId, { name: 'New Name', ownerId: 'owner-123' }),
