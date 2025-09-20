@@ -10,7 +10,7 @@ import type { DbService } from '~/framework/db/db.service';
 export class PrismaUserRepository implements UserRepository {
   constructor(private readonly db: DbService) {}
 
-  async findByEmail(email: string) {
+  async getByEmail(email: string) {
     const user = await this.db.user.findUnique({
       where: { email },
       select: {
@@ -35,7 +35,7 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async findById(id: string) {
+  async get(id: string) {
     const user = await this.db.user.findUnique({
       where: { id },
       select: {
