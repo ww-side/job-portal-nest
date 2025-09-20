@@ -7,6 +7,8 @@ import { ConflictException } from '~/core/errors/conflict';
 import { UserEntity } from '~/core/user/user.entity';
 import { UserRepository } from '~/core/user/user.repository';
 
+import { EMPLOYER_ROLE_ID } from '~/app/config/roles';
+
 import { CreateCompanyUseCase } from './create-company.case';
 
 describe('CreateCompanyUseCase', () => {
@@ -16,24 +18,25 @@ describe('CreateCompanyUseCase', () => {
 
   beforeEach(() => {
     companyRepository = {
-      findById: jest.fn(),
-      findByOwnerId: jest.fn(),
+      get: jest.fn(),
+      getByOwnerId: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
       addRecruiter: jest.fn(),
       removeRecruiter: jest.fn(),
+      getAll: jest.fn(),
     };
 
     userRepository = {
-      findById: jest.fn().mockImplementation((id: string) =>
+      get: jest.fn().mockImplementation((id: string) =>
         Promise.resolve(
           new UserEntity({
             id,
             email: 'owner@example.com',
             firstName: 'John',
             lastName: 'Doe',
-            roleId: 2,
+            roleId: EMPLOYER_ROLE_ID,
             isBanned: false,
             password: 'hashedPassword',
             createdAt: new Date(),
@@ -41,7 +44,7 @@ describe('CreateCompanyUseCase', () => {
           }),
         ),
       ),
-      findByEmail: jest.fn(),
+      getByEmail: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
@@ -56,7 +59,19 @@ describe('CreateCompanyUseCase', () => {
       ownerId: 'owner-123',
     };
 
-    companyRepository.findByOwnerId.mockResolvedValue(null);
+    userRepository.getByEmail.mockResolvedValue(
+      new UserEntity({
+        id: 'owner-123',
+        email: 'owner@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
+        roleId: EMPLOYER_ROLE_ID,
+        isBanned: false,
+        password: 'hashedPassword',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }),
+    );
     companyRepository.create.mockImplementation(async (input) => {
       return await Promise.resolve(
         new CompanyEntity({
@@ -70,7 +85,7 @@ describe('CreateCompanyUseCase', () => {
 
     const company = await useCase.execute(data);
 
-    expect(companyRepository.findByOwnerId.mock.calls[0][0]).toBe('owner-123');
+    expect(companyRepository.getByOwnerId.mock.calls[0][0]).toBe('owner-123');
     expect(companyRepository.create.mock.calls[0][0]).toEqual({
       ...data,
       recruiterIds: [],
@@ -85,7 +100,7 @@ describe('CreateCompanyUseCase', () => {
       ownerId: 'owner-123',
     };
 
-    companyRepository.findByOwnerId.mockResolvedValue(
+    companyRepository.getByOwnerId.mockResolvedValue(
       new CompanyEntity({
         id: 'company-123',
         name: 'Existing Company',

@@ -15,23 +15,24 @@ describe('DeleteJobUseCase', () => {
 
   beforeEach(() => {
     jobRepository = {
-      findById: jest.fn(),
+      get: jest.fn(),
       delete: jest.fn(),
       create: jest.fn(),
-      findMany: jest.fn(),
+      getAll: jest.fn(),
       update: jest.fn(),
       addSkill: jest.fn(),
       removeSkill: jest.fn(),
     };
 
     companyRepository = {
-      findById: jest.fn(),
+      get: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
-      findByOwnerId: jest.fn(),
+      getByOwnerId: jest.fn(),
       addRecruiter: jest.fn(),
       removeRecruiter: jest.fn(),
+      getAll: jest.fn(),
     };
 
     deleteJobUseCase = new DeleteJobUseCase({
@@ -72,20 +73,20 @@ describe('DeleteJobUseCase', () => {
       removeSkill: jest.fn(),
     };
 
-    jobRepository.findById.mockResolvedValue(job);
-    companyRepository.findById.mockResolvedValue(company);
+    jobRepository.get.mockResolvedValue(job);
+    companyRepository.get.mockResolvedValue(company);
     jobRepository.delete.mockResolvedValue(job);
 
     const result = await deleteJobUseCase.execute('job-1', 'user-1');
 
     expect(result).toEqual(job);
-    expect(jobRepository.findById.mock.calls[0][0]).toBe('job-1');
-    expect(companyRepository.findById.mock.calls[0][0]).toBe('company-1');
+    expect(jobRepository.get.mock.calls[0][0]).toBe('job-1');
+    expect(companyRepository.get.mock.calls[0][0]).toBe('company-1');
     expect(jobRepository.delete.mock.calls[0][0]).toBe('job-1');
   });
 
   it('throws NotFoundException if job does not exist', async () => {
-    jobRepository.findById.mockResolvedValue(null);
+    jobRepository.get.mockResolvedValue(null);
 
     await expect(deleteJobUseCase.execute('job-1', 'user-1')).rejects.toThrow(
       NotFoundException,
@@ -112,8 +113,8 @@ describe('DeleteJobUseCase', () => {
       removeSkill: jest.fn(),
     };
 
-    jobRepository.findById.mockResolvedValue(job);
-    companyRepository.findById.mockResolvedValue(null);
+    jobRepository.get.mockResolvedValue(job);
+    companyRepository.get.mockResolvedValue(null);
 
     await expect(deleteJobUseCase.execute('job-1', 'user-1')).rejects.toThrow(
       NotFoundException,
@@ -151,8 +152,8 @@ describe('DeleteJobUseCase', () => {
       removeSkill: jest.fn(),
     };
 
-    jobRepository.findById.mockResolvedValue(job);
-    companyRepository.findById.mockResolvedValue(company);
+    jobRepository.get.mockResolvedValue(job);
+    companyRepository.get.mockResolvedValue(company);
 
     // Act & Assert
     await expect(deleteJobUseCase.execute('job-1', 'user-999')).rejects.toThrow(
@@ -191,8 +192,8 @@ describe('DeleteJobUseCase', () => {
       removeSkill: jest.fn(),
     };
 
-    jobRepository.findById.mockResolvedValue(job);
-    companyRepository.findById.mockResolvedValue(company);
+    jobRepository.get.mockResolvedValue(job);
+    companyRepository.get.mockResolvedValue(company);
     jobRepository.delete.mockResolvedValue(job);
 
     const result = await deleteJobUseCase.execute('job-1', 'user-2');

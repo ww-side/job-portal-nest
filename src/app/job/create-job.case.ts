@@ -1,7 +1,6 @@
 import { CompanyRepository } from '~/core/company/company.repository';
 import { ForbiddenException } from '~/core/errors/forbidden';
 import { NotFoundException } from '~/core/errors/not-found';
-import { JobEntity } from '~/core/job/job.entity';
 import { CreateJobData, JobRepository } from '~/core/job/job.repository';
 
 interface CreateJobUseCaseDeps {
@@ -12,12 +11,10 @@ interface CreateJobUseCaseDeps {
 export class CreateJobUseCase {
   constructor(private readonly deps: CreateJobUseCaseDeps) {}
 
-  async execute(
-    data: CreateJobData & { createdByUserId: string },
-  ): Promise<JobEntity> {
+  async execute(data: CreateJobData & { createdByUserId: string }) {
     const { jobRepository, companyRepository } = this.deps;
 
-    const company = await companyRepository.findById(data.companyId);
+    const company = await companyRepository.get(data.companyId);
 
     if (!company) {
       throw new NotFoundException('Company not found');

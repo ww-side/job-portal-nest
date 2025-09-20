@@ -3,26 +3,30 @@ import { Module } from '@nestjs/common';
 import { CompanyRepository } from '~/core/company/company.repository';
 import { UserRepository } from '~/core/user/user.repository';
 
+import { AddRecruiterUseCase } from '~/app/company/add-recruiter.case';
+import { CreateCompanyUseCase } from '~/app/company/create-company.case';
+import { DeleteCompanyUseCase } from '~/app/company/delete-company.case';
+import { GetCompaniesUseCase } from '~/app/company/get-companies.case';
+import { GetCompanyUseCase } from '~/app/company/get-company.case';
+import { RemoveRecruiterUseCase } from '~/app/company/remove-recruiter.case';
+import { UpdateCompanyUseCase } from '~/app/company/update-company.case';
+
 import { CompanyRepositoryImpl } from '~/infrastructure/company/company.repository.impl';
 import { TokenServiceImpl } from '~/infrastructure/services/token-service.impl';
 import { PrismaUserRepository } from '~/infrastructure/user/user.repository.impl';
 
-import { DbModule } from '../db/db.module';
-import { DbService } from '../db/db.service';
-import { JwtAuthGuard } from '../shared/guards/jwt-auth';
-import { CompanyController } from './company.controller';
-import { CompanyService } from './company.service';
-import { AddRecruiterUseCase } from '~/app/company/add-recruiter.case';
-import { CreateCompanyUseCase } from '~/app/company/create-company.case';
-import { DeleteCompanyUseCase } from '~/app/company/delete-company.case';
-import { RemoveRecruiterUseCase } from '~/app/company/remove-recruiter.case';
-import { UpdateCompanyUseCase } from '~/app/company/update-company.case';
+import { DbModule } from '~/framework/db/db.module';
+import { DbService } from '~/framework/db/db.service';
+import { JwtAuthGuard } from '~/framework/shared/guards/jwt-auth';
+
+import { CompaniesController } from './companies.controller';
+import { CompaniesService } from './companies.service';
 
 @Module({
   imports: [DbModule],
-  controllers: [CompanyController],
+  controllers: [CompaniesController],
   providers: [
-    CompanyService,
+    CompaniesService,
     JwtAuthGuard,
     {
       provide: TokenServiceImpl,
@@ -64,6 +68,16 @@ import { UpdateCompanyUseCase } from '~/app/company/update-company.case';
       useFactory: (repo: CompanyRepository) => new RemoveRecruiterUseCase(repo),
       inject: [CompanyRepositoryImpl],
     },
+    {
+      provide: GetCompanyUseCase,
+      useFactory: (repo: CompanyRepository) => new GetCompanyUseCase(repo),
+      inject: [CompanyRepositoryImpl],
+    },
+    {
+      provide: GetCompaniesUseCase,
+      useFactory: (repo: CompanyRepository) => new GetCompaniesUseCase(repo),
+      inject: [CompanyRepositoryImpl],
+    },
   ],
 })
-export class CompanyModule {}
+export class CompaniesModule {}

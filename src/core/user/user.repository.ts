@@ -18,8 +18,8 @@ export interface UpdateUserData {
 }
 
 export interface UserRepository {
-  findByEmail(email: string): Promise<UserEntity | null>;
-  findById(id: string): Promise<UserEntity | null>;
+  get(id: string): Promise<UserEntity | null>;
+  getByEmail(email: string): Promise<UserEntity | null>;
   create(data: CreateUserData): Promise<UserEntity>;
   update(id: string, data: UpdateUserData): Promise<UserEntity>;
   delete(id: string): Promise<UserEntity>;

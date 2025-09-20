@@ -6,8 +6,7 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 
-import { LoginDTO } from './dto/login';
-import { RefreshTokenDTO } from './dto/refresh-token';
+import { LoginDTO, RefreshTokenDTO } from './dto';
 
 export function LoginDoc() {
   return applyDecorators(

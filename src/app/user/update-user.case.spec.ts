@@ -26,8 +26,8 @@ describe('UpdateUserUseCase', () => {
 
   beforeEach(() => {
     userRepository = {
-      findByEmail: jest.fn(),
-      findById: jest.fn(),
+      getByEmail: jest.fn(),
+      get: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
@@ -50,8 +50,8 @@ describe('UpdateUserUseCase', () => {
       phone: '123456789',
     };
 
-    userRepository.findById.mockResolvedValue(existingUser);
-    userRepository.findByEmail.mockResolvedValue(null);
+    userRepository.get.mockResolvedValue(existingUser);
+    userRepository.getByEmail.mockResolvedValue(null);
     hashService.hash.mockResolvedValue('newHashedPassword');
 
     const updatedUser = new UserEntity({
@@ -63,8 +63,8 @@ describe('UpdateUserUseCase', () => {
 
     const result = await updateUserUseCase.execute(existingUser.id, newData);
 
-    expect(userRepository.findById.mock.calls[0][0]).toBe(existingUser.id);
-    expect(userRepository.findByEmail.mock.calls[0][0]).toBe(newData.email);
+    expect(userRepository.get.mock.calls[0][0]).toBe(existingUser.id);
+    expect(userRepository.getByEmail.mock.calls[0][0]).toBe(newData.email);
     expect(hashService.hash.mock.calls[0]).toEqual([newData.password, 10]);
     expect(userRepository.update.mock.calls[0]).toEqual([
       existingUser.id,
@@ -77,7 +77,7 @@ describe('UpdateUserUseCase', () => {
   });
 
   it('throws NotFoundException if user not found', async () => {
-    userRepository.findById.mockResolvedValue(null);
+    userRepository.get.mockResolvedValue(null);
 
     await expect(
       updateUserUseCase.execute('nonexistent', { email: 'a@b.com' }),
@@ -89,8 +89,8 @@ describe('UpdateUserUseCase', () => {
 
   it('throws ConflictException if email already exists', async () => {
     const newData = { email: 'existing@example.com' };
-    userRepository.findById.mockResolvedValue(existingUser);
-    userRepository.findByEmail.mockResolvedValue(
+    userRepository.get.mockResolvedValue(existingUser);
+    userRepository.getByEmail.mockResolvedValue(
       new UserEntity({
         ...existingUser,
         id: 'other-id',
@@ -107,7 +107,7 @@ describe('UpdateUserUseCase', () => {
 
   it('keeps old password if password is not provided', async () => {
     const newData = { firstName: 'Jane' };
-    userRepository.findById.mockResolvedValue(existingUser);
+    userRepository.get.mockResolvedValue(existingUser);
     userRepository.update.mockResolvedValue(
       new UserEntity({ ...existingUser, ...newData }),
     );

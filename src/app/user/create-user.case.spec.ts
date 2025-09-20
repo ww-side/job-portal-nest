@@ -19,8 +19,8 @@ describe('CreateUserUseCase', () => {
 
   beforeEach(() => {
     userRepository = {
-      findByEmail: jest.fn(),
-      findById: jest.fn(),
+      getByEmail: jest.fn(),
+      get: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
@@ -35,7 +35,7 @@ describe('CreateUserUseCase', () => {
   });
 
   it('creates a new user when email does not exist', async () => {
-    userRepository.findByEmail.mockResolvedValue(null);
+    userRepository.getByEmail.mockResolvedValue(null);
     hashService.hash.mockResolvedValue('hashedPassword');
 
     const createdUser = new UserEntity({
@@ -53,9 +53,7 @@ describe('CreateUserUseCase', () => {
 
     const result = await createUserUseCase.execute(mockUserData);
 
-    expect(userRepository.findByEmail.mock.calls[0][0]).toBe(
-      mockUserData.email,
-    );
+    expect(userRepository.getByEmail.mock.calls[0][0]).toBe(mockUserData.email);
     expect(hashService.hash.mock.calls[0]).toEqual([mockUserData.password, 10]);
     expect(userRepository.create.mock.calls[0][0]).toEqual({
       ...mockUserData,
@@ -65,7 +63,7 @@ describe('CreateUserUseCase', () => {
   });
 
   it('throws ConflictException if email already exists', async () => {
-    userRepository.findByEmail.mockResolvedValue(
+    userRepository.getByEmail.mockResolvedValue(
       new UserEntity({
         ...mockUserData,
         id: 'existing-user',

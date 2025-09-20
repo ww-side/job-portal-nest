@@ -1,11 +1,11 @@
 import { Body, Controller, Headers, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { JwtAuthGuard } from '../shared/guards/jwt-auth';
+import { JwtAuthGuard } from '~/framework/shared/guards/jwt-auth';
+
 import { LoginDoc, LogoutDoc, RefreshTokenDoc } from './auth.docs';
 import { AuthService } from './auth.service';
-import { LoginDTO } from './dto/login';
-import { RefreshTokenDTO } from './dto/refresh-token';
+import { LoginDTO, RefreshTokenDTO } from './dto';
 
 @ApiTags('Auth')
 @Controller('auth')

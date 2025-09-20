@@ -15,8 +15,8 @@ describe('CreateJobUseCase', () => {
   beforeEach(() => {
     jobRepository = {
       create: jest.fn(),
-      findById: jest.fn(),
-      findMany: jest.fn(),
+      get: jest.fn(),
+      getAll: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
       addSkill: jest.fn(),
@@ -24,13 +24,14 @@ describe('CreateJobUseCase', () => {
     };
 
     companyRepository = {
-      findById: jest.fn(),
-      findByOwnerId: jest.fn(),
+      get: jest.fn(),
+      getByOwnerId: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
       addRecruiter: jest.fn(),
       removeRecruiter: jest.fn(),
+      getAll: jest.fn(),
     };
 
     createJobUseCase = new CreateJobUseCase({
@@ -75,13 +76,13 @@ describe('CreateJobUseCase', () => {
       removeSkill: jest.fn(),
     };
 
-    companyRepository.findById.mockResolvedValue(company);
+    companyRepository.get.mockResolvedValue(company);
     jobRepository.create.mockResolvedValue(createdJob);
 
     const result = await createJobUseCase.execute(jobData);
 
     expect(result).toEqual(createdJob);
-    expect(companyRepository.findById.mock.calls[0][0]).toBe('company-1');
+    expect(companyRepository.get.mock.calls[0][0]).toBe('company-1');
     expect(jobRepository.create.mock.calls[0][0]).toEqual({
       title: 'Frontend Developer',
       description: 'Job description',
@@ -96,7 +97,7 @@ describe('CreateJobUseCase', () => {
   });
 
   it('throws NotFoundException if company does not exist', async () => {
-    companyRepository.findById.mockResolvedValue(null);
+    companyRepository.get.mockResolvedValue(null);
 
     const jobData = {
       title: 'Frontend Developer',
@@ -129,7 +130,7 @@ describe('CreateJobUseCase', () => {
       updateInfo: jest.fn(),
     };
 
-    companyRepository.findById.mockResolvedValue(company);
+    companyRepository.get.mockResolvedValue(company);
 
     const jobData = {
       title: 'Frontend Developer',

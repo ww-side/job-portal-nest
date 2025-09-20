@@ -8,12 +8,12 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { CurrentUserId } from '../shared/decorators/current-user-id';
-import { JwtAuthGuard } from '../shared/guards/jwt-auth';
-import { CreateUserDTO } from './dto/create-user';
-import { UpdateUserDTO } from './dto/update-user';
-import { CreateUserDoc, DeleteUserDoc, UpdateUserDoc } from './user.docs';
-import { UsersService } from './user.service';
+import { CurrentUserId } from '~/framework/shared/decorators/current-user-id';
+import { JwtAuthGuard } from '~/framework/shared/guards/jwt-auth';
+
+import { CreateUserDTO, UpdateUserDTO } from './dto';
+import { CreateUserDoc, DeleteUserDoc, UpdateUserDoc } from './users.docs';
+import { UsersService } from './users.service';
 
 @ApiTags('user')
 @Controller('user')

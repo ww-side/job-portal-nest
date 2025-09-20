@@ -10,7 +10,7 @@ export class CreateUserUseCase {
   ) {}
 
   async execute(data: CreateUserData): Promise<UserEntity> {
-    const existingUser = await this.userRepository.findByEmail(data.email);
+    const existingUser = await this.userRepository.getByEmail(data.email);
 
     if (existingUser) {
       throw new ConflictException('Email already exists');

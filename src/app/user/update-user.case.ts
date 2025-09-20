@@ -17,13 +17,13 @@ export class UpdateUserUseCase {
     userIdFromToken: string,
     data: UpdateUserData,
   ): Promise<UserEntity> {
-    const user = await this.userRepository.findById(userIdFromToken);
+    const user = await this.userRepository.get(userIdFromToken);
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
     if (data.email && data.email !== user.email) {
-      const existingUser = await this.userRepository.findByEmail(data.email);
+      const existingUser = await this.userRepository.getByEmail(data.email);
       if (existingUser) {
         throw new ConflictException('Email already exists');
       }

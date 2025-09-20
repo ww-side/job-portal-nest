@@ -23,8 +23,8 @@ describe('DeleteUserUseCase', () => {
 
   beforeEach(() => {
     userRepository = {
-      findById: jest.fn(),
-      findByEmail: jest.fn(),
+      get: jest.fn(),
+      getByEmail: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
@@ -34,18 +34,18 @@ describe('DeleteUserUseCase', () => {
   });
 
   it('should delete the user and return it if it exists', async () => {
-    userRepository.findById.mockResolvedValue(mockUser);
+    userRepository.get.mockResolvedValue(mockUser);
     userRepository.delete.mockResolvedValue(mockUser);
 
     const result = await deleteUserUseCase.execute(mockUser.id);
 
-    expect(userRepository.findById.mock.calls[0][0]).toBe(mockUser.id);
+    expect(userRepository.get.mock.calls[0][0]).toBe(mockUser.id);
     expect(userRepository.delete.mock.calls[0][0]).toBe(mockUser.id);
     expect(result).toBe(mockUser);
   });
 
   it('should throw NotFoundException if user does not exist', async () => {
-    userRepository.findById.mockResolvedValue(null);
+    userRepository.get.mockResolvedValue(null);
 
     await expect(deleteUserUseCase.execute('non-existent-id')).rejects.toThrow(
       NotFoundException,

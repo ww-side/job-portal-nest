@@ -29,8 +29,8 @@ describe('LoginUserUseCase', () => {
 
   beforeEach(() => {
     userRepository = {
-      findByEmail: jest.fn(),
-      findById: jest.fn(),
+      getByEmail: jest.fn(),
+      get: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
@@ -61,7 +61,7 @@ describe('LoginUserUseCase', () => {
   });
 
   it('logs in successfully with valid credentials', async () => {
-    userRepository.findByEmail.mockResolvedValue(mockUser);
+    userRepository.getByEmail.mockResolvedValue(mockUser);
     hashService.compare.mockResolvedValue(true);
     tokenService.sign
       .mockReturnValueOnce('access-token')
@@ -73,7 +73,7 @@ describe('LoginUserUseCase', () => {
       'plainPassword',
     );
 
-    expect(userRepository.findByEmail.mock.calls[0][0]).toBe(mockUser.email);
+    expect(userRepository.getByEmail.mock.calls[0][0]).toBe(mockUser.email);
     expect(hashService.compare.mock.calls[0]).toEqual([
       'plainPassword',
       mockUser.password,
@@ -101,7 +101,7 @@ describe('LoginUserUseCase', () => {
   });
 
   it('throws UnauthorizedException when user is not found', async () => {
-    userRepository.findByEmail.mockResolvedValue(null);
+    userRepository.getByEmail.mockResolvedValue(null);
 
     await expect(
       loginUserUseCase.execute('notfound@example.com', 'anyPassword'),
@@ -113,7 +113,7 @@ describe('LoginUserUseCase', () => {
   });
 
   it('throws UnauthorizedException when password is invalid', async () => {
-    userRepository.findByEmail.mockResolvedValue(mockUser);
+    userRepository.getByEmail.mockResolvedValue(mockUser);
     hashService.compare.mockResolvedValue(false);
 
     await expect(

@@ -1,21 +1,39 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateCompanyDTO, UpdateCompanyDTO } from './dto';
 import { AddRecruiterUseCase } from '~/app/company/add-recruiter.case';
 import { CreateCompanyUseCase } from '~/app/company/create-company.case';
 import { DeleteCompanyUseCase } from '~/app/company/delete-company.case';
+import { GetCompaniesUseCase } from '~/app/company/get-companies.case';
+import { GetCompanyUseCase } from '~/app/company/get-company.case';
 import { RemoveRecruiterUseCase } from '~/app/company/remove-recruiter.case';
 import { UpdateCompanyUseCase } from '~/app/company/update-company.case';
 
+import { CreateCompanyDTO, UpdateCompanyDTO } from './dto';
+
 @Injectable()
-export class CompanyService {
+export class CompaniesService {
   constructor(
     private readonly createCompanyUseCase: CreateCompanyUseCase,
     private readonly updateCompanyUseCase: UpdateCompanyUseCase,
     private readonly deleteCompanyUseCase: DeleteCompanyUseCase,
     private readonly addRecruiterUseCase: AddRecruiterUseCase,
     private readonly removeRecruiterUseCase: RemoveRecruiterUseCase,
+    private readonly getCompanyUseCase: GetCompanyUseCase,
+    private readonly getCompaniesUseCase: GetCompaniesUseCase,
   ) {}
+
+  async get(id: string) {
+    return this.getCompanyUseCase.execute(id);
+  }
+
+  async getAll(options?: {
+    nameContains?: string;
+    ownerId?: string;
+    page?: number;
+    pageSize?: number;
+  }) {
+    return this.getCompaniesUseCase.execute(options);
+  }
 
   async create(dto: CreateCompanyDTO & { ownerId: string }) {
     return this.createCompanyUseCase.execute(dto);

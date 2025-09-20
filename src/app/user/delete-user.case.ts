@@ -6,7 +6,7 @@ export class DeleteUserUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 
   async execute(id: string): Promise<UserEntity> {
-    const user = await this.userRepository.findById(id);
+    const user = await this.userRepository.get(id);
 
     if (!user) {
       throw new NotFoundException('User not found');
