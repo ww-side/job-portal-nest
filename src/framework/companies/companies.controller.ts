@@ -14,8 +14,8 @@ import {
   CreateCompanyDoc,
   DeleteCompanyDoc,
   UpdateCompanyDoc,
-} from './company.docs';
-import { CompanyService } from './company.service';
+} from './companies.docs';
+import { CompanyService } from './companies.service';
 import { CreateCompanyDTO, UpdateCompanyDTO } from './dto';
 
 @Controller('company')

@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateUserDTO } from '~/framework/user/dto/create-user';
-
-import { UpdateUserDTO } from './dto/update-user';
+import { CreateUserDTO, UpdateUserDTO } from './dto';
 import { CreateUserUseCase } from '~/app/user/create-user.case';
 import { DeleteUserUseCase } from '~/app/user/delete-user.case';
 import { UpdateUserUseCase } from '~/app/user/update-user.case';

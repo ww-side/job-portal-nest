@@ -10,8 +10,8 @@ import { DbModule } from '~/framework/db/db.module';
 import { DbService } from '~/framework/db/db.service';
 import { JwtAuthGuard } from '~/framework/shared/guards/jwt-auth';
 
-import { JobsController } from './job.controller';
-import { JobsService } from './job.service';
+import { JobsController } from './jobs.controller';
+import { JobsService } from './jobs.service';
 import { CreateJobUseCase } from '~/app/job/create-job.case';
 import { DeleteJobUseCase } from '~/app/job/delete-job.case';
 import { UpdateJobUseCase } from '~/app/job/update-job.case';

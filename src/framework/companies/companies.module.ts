@@ -10,8 +10,8 @@ import { PrismaUserRepository } from '~/infrastructure/user/user.repository.impl
 import { DbModule } from '../db/db.module';
 import { DbService } from '../db/db.service';
 import { JwtAuthGuard } from '../shared/guards/jwt-auth';
-import { CompanyController } from './company.controller';
-import { CompanyService } from './company.service';
+import { CompanyController } from './companies.controller';
+import { CompanyService } from './companies.service';
 import { AddRecruiterUseCase } from '~/app/company/add-recruiter.case';
 import { CreateCompanyUseCase } from '~/app/company/create-company.case';
 import { DeleteCompanyUseCase } from '~/app/company/delete-company.case';

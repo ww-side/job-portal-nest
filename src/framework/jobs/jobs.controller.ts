@@ -13,7 +13,7 @@ import {
 import { CurrentUserId } from '../shared/decorators/current-user-id';
 import { JwtAuthGuard } from '../shared/guards/jwt-auth';
 import { CreateJobDto, UpdateJobDTO } from './dto';
-import { JobsService } from './job.service';
+import { JobsService } from './jobs.service';
 
 @Controller('jobs')
 @UseGuards(JwtAuthGuard)

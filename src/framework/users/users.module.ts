@@ -12,8 +12,8 @@ import { DbModule } from '~/framework/db/db.module';
 
 import { DbService } from '../db/db.service';
 import { JwtAuthGuard } from '../shared/guards/jwt-auth';
-import { UsersController } from './user.controller';
-import { UsersService } from './user.service';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
 import { CreateUserUseCase } from '~/app/user/create-user.case';
 import { DeleteUserUseCase } from '~/app/user/delete-user.case';
 import { UpdateUserUseCase } from '~/app/user/update-user.case';
