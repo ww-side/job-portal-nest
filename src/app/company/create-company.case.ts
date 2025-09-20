@@ -7,6 +7,8 @@ import { ConflictException } from '~/core/errors/conflict';
 import { ForbiddenException } from '~/core/errors/forbidden';
 import { UserRepository } from '~/core/user/user.repository';
 
+const EMPLOYER_ROLE_ID = 2;
+
 export class CreateCompanyUseCase {
   constructor(
     private readonly companyRepository: CompanyRepository,
@@ -24,7 +26,7 @@ export class CreateCompanyUseCase {
 
     const user = await this.userRepository.findById(data.ownerId);
 
-    if (user?.roleId !== 1) {
+    if (user?.roleId !== EMPLOYER_ROLE_ID) {
       throw new ForbiddenException(
         'User must have employer role to create company',
       );

@@ -8,6 +8,8 @@ import { CompanyModule } from '~/framework/company/company.module';
 import { DbModule } from '~/framework/db/db.module';
 import { UsersModule } from '~/framework/user/user.module';
 
+import { JobsModule } from './framework/job/job.module';
+
 @Module({
   imports: [
     DbModule,
@@ -22,6 +24,7 @@ import { UsersModule } from '~/framework/user/user.module';
     UsersModule,
     AuthModule,
     CompanyModule,
+    JobsModule,
   ],
 })
 export class AppModule {}
