@@ -33,7 +33,7 @@ describe('CreateCompanyUseCase', () => {
             email: 'owner@example.com',
             firstName: 'John',
             lastName: 'Doe',
-            roleId: 1,
+            roleId: 2,
             isBanned: false,
             password: 'hashedPassword',
             createdAt: new Date(),

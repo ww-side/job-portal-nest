@@ -50,4 +50,35 @@ model Company {
   recruiters  User[]   @relation("CompanyRecruiters")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  jobs        Job[]
+}
+
+model Job {
+  id          String    @id @default(uuid())
+  title       String    @db.VarChar(255)
+  description String
+  companyId   String
+  company     Company   @relation(fields: [companyId], references: [id])
+  location    String    @db.VarChar(255)
+  salaryMin   Decimal?  @db.Decimal(10, 2)
+  salaryMax   Decimal?  @db.Decimal(10, 2)
+  statusId    String
+  status      JobStatus @relation(fields: [statusId], references: [id])
+  typeId      String
+  type        JobType   @relation(fields: [typeId], references: [id])
+  skills      String[]  @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model JobStatus {
+  id   String @id @default(uuid())
+  name String @unique @db.VarChar(50)
+  jobs Job[]
+}
+
+model JobType {
+  id   String @id @default(uuid())
+  name String @unique @db.VarChar(50)
+  jobs Job[]
 }
