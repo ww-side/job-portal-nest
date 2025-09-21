@@ -1,4 +1,3 @@
-import { CompanyEntity } from '~/core/company/company.entity';
 import { CompanyRepository } from '~/core/company/company.repository';
 import { NotFoundException } from '~/core/errors/not-found';
 
