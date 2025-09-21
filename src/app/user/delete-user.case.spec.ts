@@ -2,6 +2,8 @@ import { NotFoundException } from '~/core/errors/not-found';
 import { UserEntity } from '~/core/user/user.entity';
 import type { UserRepository } from '~/core/user/user.repository';
 
+import { mockUserRepository } from '~/test/mocks/repositories';
+
 import { DeleteUserUseCase } from './delete-user.case';
 
 describe('DeleteUserUseCase', () => {
@@ -22,13 +24,7 @@ describe('DeleteUserUseCase', () => {
   });
 
   beforeEach(() => {
-    userRepository = {
-      get: jest.fn(),
-      getByEmail: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-    };
+    userRepository = mockUserRepository;
 
     deleteUserUseCase = new DeleteUserUseCase(userRepository);
   });
