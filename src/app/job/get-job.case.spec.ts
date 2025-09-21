@@ -3,7 +3,10 @@ import { NotFoundException } from '~/core/errors/not-found';
 import { JobEntity } from '~/core/job/job.entity';
 import { JobRepository } from '~/core/job/job.repository';
 
-import { mockCompanyRepository, mockJobRepository } from '~/test/repositories';
+import {
+  mockCompanyRepository,
+  mockJobRepository,
+} from '~/test/mocks/repositories';
 
 import { GetJobUseCase } from './get-job.case';
 

@@ -5,7 +5,11 @@ import { NotFoundException } from '~/core/errors/not-found';
 import { JobEntity } from '~/core/job/job.entity';
 import { JobRepository } from '~/core/job/job.repository';
 
-import { mockCompanyRepository, mockJobRepository } from '~/test/repositories';
+import { mockCompanyEntity } from '~/test/mocks/entities';
+import {
+  mockCompanyRepository,
+  mockJobRepository,
+} from '~/test/mocks/repositories';
 
 import { CreateJobUseCase } from './create-job.case';
 
@@ -24,32 +28,20 @@ describe('CreateJobUseCase', () => {
     });
   });
 
+  const jobData = {
+    title: 'Frontend Developer',
+    description: 'Job description',
+    companyId: 'company-1',
+    location: 'Remote',
+    salaryMin: 5000,
+    salaryMax: 8000,
+    statusId: '1',
+    typeId: '2',
+    skills: ['React', 'Node.js'],
+    createdByUserId: 'user-1',
+  };
+
   it('creates a job successfully if user is owner', async () => {
-    const company: CompanyEntity = {
-      id: 'company-1',
-      name: 'Acme Corp',
-      ownerId: 'user-1',
-      recruiterIds: ['user-2'],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      updateInfo: jest.fn(),
-    };
-
-    const jobData = {
-      title: 'Frontend Developer',
-      description: 'Job description',
-      companyId: 'company-1',
-      location: 'Remote',
-      salaryMin: 5000,
-      salaryMax: 8000,
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      createdByUserId: 'user-1',
-    };
-
     const createdJob: JobEntity = {
       ...jobData,
       id: 'job-1',
@@ -60,7 +52,7 @@ describe('CreateJobUseCase', () => {
       removeSkill: jest.fn(),
     };
 
-    companyRepository.get.mockResolvedValue(company);
+    companyRepository.get.mockResolvedValue(mockCompanyEntity);
     jobRepository.create.mockResolvedValue(createdJob);
 
     const result = await createJobUseCase.execute(jobData);
@@ -83,19 +75,6 @@ describe('CreateJobUseCase', () => {
   it('throws NotFoundException if company does not exist', async () => {
     companyRepository.get.mockResolvedValue(null);
 
-    const jobData = {
-      title: 'Frontend Developer',
-      description: 'Job description',
-      companyId: 'company-1',
-      location: 'Remote',
-      salaryMin: 5000,
-      salaryMax: 8000,
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      createdByUserId: 'user-1',
-    };
-
     await expect(createJobUseCase.execute(jobData)).rejects.toThrow(
       NotFoundException,
     );
@@ -115,19 +94,6 @@ describe('CreateJobUseCase', () => {
     };
 
     companyRepository.get.mockResolvedValue(company);
-
-    const jobData = {
-      title: 'Frontend Developer',
-      description: 'Job description',
-      companyId: 'company-1',
-      location: 'Remote',
-      salaryMin: 5000,
-      salaryMax: 8000,
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      createdByUserId: 'user-999',
-    };
 
     await expect(createJobUseCase.execute(jobData)).rejects.toThrow(
       ForbiddenException,
