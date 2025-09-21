@@ -6,6 +6,8 @@ import { NotFoundException } from '~/core/errors/not-found';
 import { JobEntity } from '~/core/job/job.entity';
 import { JobRepository, UpdateJobData } from '~/core/job/job.repository';
 
+import { mockCompanyRepository, mockJobRepository } from '~/test/repositories';
+
 import { UpdateJobUseCase } from './update-job.case';
 
 describe('UpdateJobUseCase', () => {
@@ -14,26 +16,8 @@ describe('UpdateJobUseCase', () => {
   let updateJobUseCase: UpdateJobUseCase;
 
   beforeEach(() => {
-    jobRepository = {
-      get: jest.fn(),
-      update: jest.fn(),
-      create: jest.fn(),
-      getAll: jest.fn(),
-      delete: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-    };
-
-    companyRepository = {
-      get: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      getByOwnerId: jest.fn(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      getAll: jest.fn(),
-    };
+    jobRepository = mockJobRepository;
+    companyRepository = mockCompanyRepository;
 
     updateJobUseCase = new UpdateJobUseCase({
       jobRepository,

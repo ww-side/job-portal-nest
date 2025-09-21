@@ -6,6 +6,8 @@ import { NotFoundException } from '~/core/errors/not-found';
 import { JobEntity } from '~/core/job/job.entity';
 import { JobRepository } from '~/core/job/job.repository';
 
+import { mockCompanyRepository, mockJobRepository } from '~/test/repositories';
+
 import { DeleteJobUseCase } from './delete-job.case';
 
 describe('DeleteJobUseCase', () => {
@@ -14,26 +16,8 @@ describe('DeleteJobUseCase', () => {
   let deleteJobUseCase: DeleteJobUseCase;
 
   beforeEach(() => {
-    jobRepository = {
-      get: jest.fn(),
-      delete: jest.fn(),
-      create: jest.fn(),
-      getAll: jest.fn(),
-      update: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-    };
-
-    companyRepository = {
-      get: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      getByOwnerId: jest.fn(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      getAll: jest.fn(),
-    };
+    jobRepository = mockJobRepository;
+    companyRepository = mockCompanyRepository;
 
     deleteJobUseCase = new DeleteJobUseCase({
       jobRepository,
@@ -42,7 +26,6 @@ describe('DeleteJobUseCase', () => {
   });
 
   it('deletes a job successfully if user is owner', async () => {
-    // Arrange
     const company: CompanyEntity = {
       id: 'company-1',
       name: 'Acme Corp',
@@ -94,7 +77,6 @@ describe('DeleteJobUseCase', () => {
   });
 
   it('throws NotFoundException if company does not exist', async () => {
-    // Arrange
     const job: JobEntity = {
       id: 'job-1',
       title: 'Frontend Developer',
@@ -155,7 +137,6 @@ describe('DeleteJobUseCase', () => {
     jobRepository.get.mockResolvedValue(job);
     companyRepository.get.mockResolvedValue(company);
 
-    // Act & Assert
     await expect(deleteJobUseCase.execute('job-1', 'user-999')).rejects.toThrow(
       ForbiddenException,
     );

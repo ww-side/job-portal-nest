@@ -3,6 +3,8 @@ import { NotFoundException } from '~/core/errors/not-found';
 import { JobEntity } from '~/core/job/job.entity';
 import { JobRepository } from '~/core/job/job.repository';
 
+import { mockCompanyRepository, mockJobRepository } from '~/test/repositories';
+
 import { GetJobUseCase } from './get-job.case';
 
 describe('GetJobUseCase', () => {
@@ -11,26 +13,8 @@ describe('GetJobUseCase', () => {
   let getJobUseCase: GetJobUseCase;
 
   beforeEach(() => {
-    jobRepository = {
-      get: jest.fn(),
-      getAll: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-    };
-
-    companyRepository = {
-      get: jest.fn(),
-      getByOwnerId: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      getAll: jest.fn(),
-    };
+    jobRepository = mockJobRepository;
+    companyRepository = mockCompanyRepository;
 
     getJobUseCase = new GetJobUseCase({
       jobRepository,
@@ -81,6 +65,7 @@ describe('GetJobUseCase', () => {
 
   it('throws NotFoundException if job does not exist', async () => {
     jobRepository.get.mockResolvedValue(null);
+    companyRepository.get.mockClear();
 
     await expect(getJobUseCase.execute('job-1')).rejects.toThrow(
       NotFoundException,

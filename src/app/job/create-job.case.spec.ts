@@ -5,8 +5,9 @@ import { NotFoundException } from '~/core/errors/not-found';
 import { JobEntity } from '~/core/job/job.entity';
 import { JobRepository } from '~/core/job/job.repository';
 
-import { CreateJobUseCase } from './create-job.case';
 import { mockCompanyRepository, mockJobRepository } from '~/test/repositories';
+
+import { CreateJobUseCase } from './create-job.case';
 
 describe('CreateJobUseCase', () => {
   let jobRepository: jest.Mocked<JobRepository>;

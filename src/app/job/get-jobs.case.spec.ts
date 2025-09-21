@@ -1,6 +1,8 @@
 import { JobEntity } from '~/core/job/job.entity';
 import { JobRepository } from '~/core/job/job.repository';
 
+import { mockJobRepository } from '~/test/repositories';
+
 import { GetJobsUseCase } from './get-jobs.case';
 
 describe('GetJobsUseCase', () => {
@@ -8,15 +10,7 @@ describe('GetJobsUseCase', () => {
   let getJobsUseCase: GetJobsUseCase;
 
   beforeEach(() => {
-    jobRepository = {
-      get: jest.fn(),
-      getAll: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-    };
+    jobRepository = mockJobRepository;
 
     getJobsUseCase = new GetJobsUseCase(jobRepository);
   });
