@@ -6,6 +6,7 @@ import { JobEntity } from '~/core/job/job.entity';
 import { JobRepository } from '~/core/job/job.repository';
 
 import { CreateJobUseCase } from './create-job.case';
+import { mockCompanyRepository, mockJobRepository } from '~/test/repositories';
 
 describe('CreateJobUseCase', () => {
   let jobRepository: jest.Mocked<JobRepository>;
@@ -13,26 +14,8 @@ describe('CreateJobUseCase', () => {
   let createJobUseCase: CreateJobUseCase;
 
   beforeEach(() => {
-    jobRepository = {
-      create: jest.fn(),
-      get: jest.fn(),
-      getAll: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-    };
-
-    companyRepository = {
-      get: jest.fn(),
-      getByOwnerId: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      getAll: jest.fn(),
-    };
+    jobRepository = mockJobRepository;
+    companyRepository = mockCompanyRepository;
 
     createJobUseCase = new CreateJobUseCase({
       jobRepository,
