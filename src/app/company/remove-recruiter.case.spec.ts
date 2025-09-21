@@ -3,6 +3,8 @@ import type { CompanyRepository } from '~/core/company/company.repository';
 import { ForbiddenException } from '~/core/errors/forbidden';
 import { NotFoundException } from '~/core/errors/not-found';
 
+import { mockCompanyRepository } from '~/test/mocks/repositories';
+
 import { RemoveRecruiterUseCase } from './remove-recruiter.case';
 
 describe('RemoveRecruiterUseCase', () => {
@@ -10,16 +12,7 @@ describe('RemoveRecruiterUseCase', () => {
   let companyRepository: jest.Mocked<CompanyRepository>;
 
   beforeEach(() => {
-    companyRepository = {
-      get: jest.fn(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      getByOwnerId: jest.fn(),
-      getAll: jest.fn(),
-    };
+    companyRepository = mockCompanyRepository;
 
     useCase = new RemoveRecruiterUseCase(companyRepository);
   });
