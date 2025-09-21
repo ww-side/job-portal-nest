@@ -3,6 +3,9 @@ import type { HashService } from '~/core/services/hash-service';
 import { UserEntity } from '~/core/user/user.entity';
 import type { UserRepository } from '~/core/user/user.repository';
 
+import { mockUserRepository } from '~/test/mocks/repositories';
+import { mockHashService } from '~/test/mocks/services';
+
 import { CreateUserUseCase } from './create-user.case';
 
 describe('CreateUserUseCase', () => {
@@ -18,18 +21,8 @@ describe('CreateUserUseCase', () => {
   };
 
   beforeEach(() => {
-    userRepository = {
-      getByEmail: jest.fn(),
-      get: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-    };
-
-    hashService = {
-      hash: jest.fn(),
-      compare: jest.fn(),
-    };
+    userRepository = mockUserRepository;
+    hashService = mockHashService;
 
     createUserUseCase = new CreateUserUseCase(userRepository, hashService);
   });

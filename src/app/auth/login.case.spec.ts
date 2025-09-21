@@ -5,6 +5,13 @@ import type { TokenService } from '~/core/services/token-service';
 import { UserEntity } from '~/core/user/user.entity';
 import type { UserRepository } from '~/core/user/user.repository';
 
+import { mockUserRepository } from '~/test/mocks/repositories';
+import {
+  mockCacheService,
+  mockHashService,
+  mockTokenService,
+} from '~/test/mocks/services';
+
 import { LoginUserUseCase } from './login.case';
 
 describe('LoginUserUseCase', () => {
@@ -28,29 +35,10 @@ describe('LoginUserUseCase', () => {
   });
 
   beforeEach(() => {
-    userRepository = {
-      getByEmail: jest.fn(),
-      get: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-    };
-
-    cacheService = {
-      get: jest.fn(),
-      set: jest.fn(),
-      del: jest.fn(),
-    };
-
-    tokenService = {
-      sign: jest.fn(),
-      verify: jest.fn(),
-    };
-
-    hashService = {
-      hash: jest.fn(),
-      compare: jest.fn(),
-    };
+    userRepository = mockUserRepository;
+    cacheService = mockCacheService;
+    tokenService = mockTokenService;
+    hashService = mockHashService;
 
     loginUserUseCase = new LoginUserUseCase(
       userRepository,

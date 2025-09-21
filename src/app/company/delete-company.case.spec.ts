@@ -2,6 +2,8 @@ import { CompanyEntity } from '~/core/company/company.entity';
 import type { CompanyRepository } from '~/core/company/company.repository';
 import { NotFoundException } from '~/core/errors/not-found';
 
+import { mockCompanyRepository } from '~/test/mocks/repositories';
+
 import { DeleteCompanyUseCase } from './delete-company.case';
 
 describe('DeleteCompanyUseCase', () => {
@@ -9,16 +11,7 @@ describe('DeleteCompanyUseCase', () => {
   let companyRepository: jest.Mocked<CompanyRepository>;
 
   beforeEach(() => {
-    companyRepository = {
-      get: jest.fn(),
-      getByOwnerId: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      getAll: jest.fn(),
-    };
+    companyRepository = mockCompanyRepository;
 
     useCase = new DeleteCompanyUseCase(companyRepository);
   });

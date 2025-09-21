@@ -6,6 +6,11 @@ import { NotFoundException } from '~/core/errors/not-found';
 import { JobEntity } from '~/core/job/job.entity';
 import { JobRepository, UpdateJobData } from '~/core/job/job.repository';
 
+import {
+  mockCompanyRepository,
+  mockJobRepository,
+} from '~/test/mocks/repositories';
+
 import { UpdateJobUseCase } from './update-job.case';
 
 describe('UpdateJobUseCase', () => {
@@ -13,27 +18,39 @@ describe('UpdateJobUseCase', () => {
   let companyRepository: jest.Mocked<CompanyRepository>;
   let updateJobUseCase: UpdateJobUseCase;
 
-  beforeEach(() => {
-    jobRepository = {
-      get: jest.fn(),
-      update: jest.fn(),
-      create: jest.fn(),
-      getAll: jest.fn(),
-      delete: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-    };
+  const createJob = (): JobEntity => ({
+    id: 'job-1',
+    title: 'Old Title',
+    description: 'Old description',
+    companyId: 'company-1',
+    location: 'Remote',
+    salaryMin: 4000,
+    salaryMax: 7000,
+    statusId: '1',
+    typeId: '2',
+    skills: ['React'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    updateInfo: jest.fn(),
+    addSkill: jest.fn(),
+    removeSkill: jest.fn(),
+  });
 
-    companyRepository = {
-      get: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      getByOwnerId: jest.fn(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      getAll: jest.fn(),
-    };
+  const createCompany = (): CompanyEntity => ({
+    id: 'company-1',
+    name: 'Acme Corp',
+    ownerId: 'user-1',
+    recruiterIds: ['recruiter-1'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    addRecruiter: jest.fn(),
+    removeRecruiter: jest.fn(),
+    updateInfo: jest.fn(),
+  });
+
+  beforeEach(() => {
+    jobRepository = mockJobRepository;
+    companyRepository = mockCompanyRepository;
 
     updateJobUseCase = new UpdateJobUseCase({
       jobRepository,
@@ -42,36 +59,8 @@ describe('UpdateJobUseCase', () => {
   });
 
   it('updates a job successfully if user is owner', async () => {
-    const company: CompanyEntity = {
-      id: 'company-1',
-      name: 'Acme Corp',
-      ownerId: 'user-1',
-      recruiterIds: ['user-2'],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      updateInfo: jest.fn(),
-    };
-
-    const job: JobEntity = {
-      id: 'job-1',
-      title: 'Old Title',
-      description: 'Old description',
-      companyId: 'company-1',
-      location: 'Remote',
-      salaryMin: 4000,
-      salaryMax: 7000,
-      statusId: '1',
-      typeId: '2',
-      skills: ['React'],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-    };
-
+    const job = createJob();
+    const company = createCompany();
     const updateData: UpdateJobData = {
       title: 'New Title',
       description: 'New Description',
@@ -82,7 +71,6 @@ describe('UpdateJobUseCase', () => {
       typeId: '3',
       skills: ['React', 'Node.js'],
     };
-
     const updatedJob: JobEntity = {
       ...job,
       ...updateData,
@@ -110,10 +98,7 @@ describe('UpdateJobUseCase', () => {
 
   it('throws NotFoundException if job does not exist', async () => {
     jobRepository.get.mockResolvedValue(null);
-
-    const updateData: UpdateJobData = {
-      title: 'New Title',
-    };
+    const updateData: UpdateJobData = { title: 'New Title' };
 
     await expect(
       updateJobUseCase.execute('job-1', 'user-1', updateData),
@@ -121,30 +106,10 @@ describe('UpdateJobUseCase', () => {
   });
 
   it('throws NotFoundException if company does not exist', async () => {
-    const job: JobEntity = {
-      id: 'job-1',
-      title: 'Old Title',
-      description: 'Old description',
-      companyId: 'company-1',
-      location: 'Remote',
-      salaryMin: 4000,
-      salaryMax: 7000,
-      statusId: '1',
-      typeId: '2',
-      skills: ['React'],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-    };
-
+    const job = createJob();
     jobRepository.get.mockResolvedValue(job);
     companyRepository.get.mockResolvedValue(null);
-
-    const updateData: UpdateJobData = {
-      title: 'New Title',
-    };
+    const updateData: UpdateJobData = { title: 'New Title' };
 
     await expect(
       updateJobUseCase.execute('job-1', 'user-1', updateData),
@@ -152,42 +117,14 @@ describe('UpdateJobUseCase', () => {
   });
 
   it('throws ForbiddenException if user is not owner or recruiter', async () => {
-    const company: CompanyEntity = {
-      id: 'company-1',
-      name: 'Acme Corp',
-      ownerId: 'owner-1',
-      recruiterIds: ['recruiter-1'],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      updateInfo: jest.fn(),
-    };
-
-    const job: JobEntity = {
-      id: 'job-1',
-      title: 'Old Title',
-      description: 'Old description',
-      companyId: 'company-1',
-      location: 'Remote',
-      salaryMin: 4000,
-      salaryMax: 7000,
-      statusId: '1',
-      typeId: '2',
-      skills: ['React'],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-    };
+    const job = createJob();
+    const company = createCompany();
+    company.ownerId = 'owner-1';
 
     jobRepository.get.mockResolvedValue(job);
     companyRepository.get.mockResolvedValue(company);
 
-    const updateData: UpdateJobData = {
-      title: 'New Title',
-    };
+    const updateData: UpdateJobData = { title: 'New Title' };
 
     await expect(
       updateJobUseCase.execute('job-1', 'user-999', updateData),

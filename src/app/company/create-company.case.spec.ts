@@ -9,6 +9,11 @@ import { UserRepository } from '~/core/user/user.repository';
 
 import { EMPLOYER_ROLE_ID } from '~/app/config/roles';
 
+import {
+  mockCompanyRepository,
+  mockUserRepository,
+} from '~/test/mocks/repositories';
+
 import { CreateCompanyUseCase } from './create-company.case';
 
 describe('CreateCompanyUseCase', () => {
@@ -17,38 +22,8 @@ describe('CreateCompanyUseCase', () => {
   let userRepository: jest.Mocked<UserRepository>;
 
   beforeEach(() => {
-    companyRepository = {
-      get: jest.fn(),
-      getByOwnerId: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      getAll: jest.fn(),
-    };
-
-    userRepository = {
-      get: jest.fn().mockImplementation((id: string) =>
-        Promise.resolve(
-          new UserEntity({
-            id,
-            email: 'owner@example.com',
-            firstName: 'John',
-            lastName: 'Doe',
-            roleId: EMPLOYER_ROLE_ID,
-            isBanned: false,
-            password: 'hashedPassword',
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          }),
-        ),
-      ),
-      getByEmail: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-    };
+    companyRepository = mockCompanyRepository;
+    userRepository = mockUserRepository;
 
     useCase = new CreateCompanyUseCase(companyRepository, userRepository);
   });

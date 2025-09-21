@@ -5,6 +5,8 @@ import type {
 } from '~/core/company/company.repository';
 import { NotFoundException } from '~/core/errors/not-found';
 
+import { mockCompanyRepository } from '~/test/mocks/repositories';
+
 import { UpdateCompanyUseCase } from './update-company.case';
 
 describe('UpdateCompanyUseCase', () => {
@@ -12,16 +14,7 @@ describe('UpdateCompanyUseCase', () => {
   let companyRepository: jest.Mocked<CompanyRepository>;
 
   beforeEach(() => {
-    companyRepository = {
-      get: jest.fn(),
-      getByOwnerId: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      getAll: jest.fn(),
-    };
+    companyRepository = mockCompanyRepository;
 
     useCase = new UpdateCompanyUseCase(companyRepository);
   });
