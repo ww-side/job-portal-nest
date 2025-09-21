@@ -2,6 +2,8 @@ import { UnauthorizedException } from '~/core/errors/unauthorized';
 import type { CacheService } from '~/core/services/cache-service';
 import type { TokenService } from '~/core/services/token-service';
 
+import { mockCacheService, mockTokenService } from '~/test/mocks/services';
+
 import { LogoutUserUseCase } from './logout.case';
 
 describe('LogoutUserUseCase', () => {
@@ -10,16 +12,8 @@ describe('LogoutUserUseCase', () => {
   let tokenService: jest.Mocked<TokenService>;
 
   beforeEach(() => {
-    cacheService = {
-      get: jest.fn(),
-      set: jest.fn(),
-      del: jest.fn(),
-    };
-
-    tokenService = {
-      sign: jest.fn(),
-      verify: jest.fn(),
-    };
+    cacheService = mockCacheService;
+    tokenService = mockTokenService;
 
     logoutUserUseCase = new LogoutUserUseCase(cacheService, tokenService);
   });

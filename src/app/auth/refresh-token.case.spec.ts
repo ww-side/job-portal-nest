@@ -4,6 +4,12 @@ import type { CacheService } from '~/core/services/cache-service';
 import type { HashService } from '~/core/services/hash-service';
 import type { TokenService } from '~/core/services/token-service';
 
+import {
+  mockCacheService,
+  mockHashService,
+  mockTokenService,
+} from '~/test/mocks/services';
+
 import { RefreshTokenUseCase } from './refresh-token.case';
 
 describe('RefreshTokenUseCase', () => {
@@ -18,21 +24,9 @@ describe('RefreshTokenUseCase', () => {
   const now = new Date();
 
   beforeEach(() => {
-    cacheService = {
-      get: jest.fn(),
-      set: jest.fn(),
-      del: jest.fn(),
-    };
-
-    tokenService = {
-      sign: jest.fn(),
-      verify: jest.fn(),
-    };
-
-    hashService = {
-      hash: jest.fn(),
-      compare: jest.fn(),
-    };
+    cacheService = mockCacheService;
+    tokenService = mockTokenService;
+    hashService = mockHashService;
 
     refreshTokenUseCase = new RefreshTokenUseCase(
       cacheService,
