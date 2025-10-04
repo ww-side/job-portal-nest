@@ -2,7 +2,7 @@ import { CompanyEntity } from '~/core/company/company.entity';
 import type { CompanyRepository } from '~/core/company/company.repository';
 import { NotFoundException } from '~/core/errors/not-found';
 
-import { mockCompanyRepository } from '~/test/mocks/repositories';
+import { mockCompanyRepository } from '~/tests/mocks/repositories';
 
 import { DeleteCompanyUseCase } from './delete-company.case';
 

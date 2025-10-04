@@ -2,7 +2,7 @@ import { NotFoundException } from '~/core/errors/not-found';
 import { UserEntity } from '~/core/user/user.entity';
 import type { UserRepository } from '~/core/user/user.repository';
 
-import { mockUserRepository } from '~/test/mocks/repositories';
+import { mockUserRepository } from '~/tests/mocks/repositories';
 
 import { DeleteUserUseCase } from './delete-user.case';
 

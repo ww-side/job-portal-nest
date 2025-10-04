@@ -3,7 +3,7 @@ import { ApplicationRepository } from '~/core/application/application.repository
 import { ForbiddenException } from '~/core/errors/forbidden';
 import { NotFoundException } from '~/core/errors/not-found';
 
-import { mockApplicationRepository } from '~/test/mocks/repositories';
+import { mockApplicationRepository } from '~/tests/mocks/repositories';
 
 import { DeleteApplicationUseCase } from './delete-application.case';
 
@@ -16,18 +16,18 @@ describe('DeleteApplicationUseCase', () => {
     useCase = new DeleteApplicationUseCase(applicationRepository);
   });
 
-  it('deletes the application if the user is the owner', async () => {
-    const application = new ApplicationEntity({
-      id: 'app-123',
-      userId: 'user-123',
-      jobId: 'job-123',
-      message: 'Test message',
-      cvUrl: 'https://example.com/cv.pdf',
-      statusId: '1',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+  const application = new ApplicationEntity({
+    id: 'app-123',
+    userId: 'user-123',
+    jobId: 'job-123',
+    message: 'Test message',
+    cvUrl: 'https://example.com/cv.pdf',
+    statusId: '1',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
 
+  it('deletes the application if the user is the owner', async () => {
     applicationRepository.get.mockResolvedValue(application);
     applicationRepository.delete.mockResolvedValue(application);
 
@@ -48,17 +48,6 @@ describe('DeleteApplicationUseCase', () => {
   });
 
   it('throws ForbiddenException if user is not the owner', async () => {
-    const application = new ApplicationEntity({
-      id: 'app-123',
-      userId: 'owner-123',
-      jobId: 'job-123',
-      message: 'Test message',
-      cvUrl: 'https://example.com/cv.pdf',
-      statusId: '1',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-
     applicationRepository.get.mockResolvedValue(application);
 
     await expect(useCase.execute('app-123', 'user-456')).rejects.toThrow(

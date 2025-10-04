@@ -9,7 +9,7 @@ import { JobRepository, UpdateJobData } from '~/core/job/job.repository';
 import {
   mockCompanyRepository,
   mockJobRepository,
-} from '~/test/mocks/repositories';
+} from '~/tests/mocks/repositories';
 
 import { UpdateJobUseCase } from './update-job.case';
 
@@ -31,9 +31,6 @@ describe('UpdateJobUseCase', () => {
     skills: ['React'],
     createdAt: new Date(),
     updatedAt: new Date(),
-    updateInfo: jest.fn(),
-    addSkill: jest.fn(),
-    removeSkill: jest.fn(),
   });
 
   const createCompany = (): CompanyEntity => ({
@@ -43,9 +40,6 @@ describe('UpdateJobUseCase', () => {
     recruiterIds: ['recruiter-1'],
     createdAt: new Date(),
     updatedAt: new Date(),
-    addRecruiter: jest.fn(),
-    removeRecruiter: jest.fn(),
-    updateInfo: jest.fn(),
   });
 
   beforeEach(() => {
@@ -74,9 +68,6 @@ describe('UpdateJobUseCase', () => {
     const updatedJob: JobEntity = {
       ...job,
       ...updateData,
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
     };
 
     jobRepository.get.mockResolvedValue(job);

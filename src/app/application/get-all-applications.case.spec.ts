@@ -3,12 +3,13 @@ import { ForbiddenException } from '@nestjs/common';
 import { ApplicationEntity } from '~/core/application/application.entity';
 import { UserEntity } from '~/core/user/user.entity';
 
+import { mockJobEntity } from '~/tests/mocks/entities';
 import {
   mockApplicationRepository,
   mockCompanyRepository,
   mockJobRepository,
   mockUserRepository,
-} from '~/test/mocks/repositories';
+} from '~/tests/mocks/repositories';
 
 import { GetAllApplicationsUseCase } from './get-all-applications.case';
 
@@ -62,21 +63,7 @@ describe('GetAllApplicationsUseCase', () => {
         updatedAt: new Date(),
       }),
     );
-    mockJobRepository.get.mockResolvedValue({
-      id: 'job-123',
-      companyId: 'company-456',
-      title: 'Job',
-      description: 'Desc',
-      location: 'Remote',
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+    mockJobRepository.get.mockResolvedValue(mockJobEntity);
     mockCompanyRepository.get.mockResolvedValue({
       id: 'company-456',
       ownerId: 'other-user',
@@ -84,9 +71,6 @@ describe('GetAllApplicationsUseCase', () => {
       recruiterIds: [],
       createdAt: new Date(),
       updatedAt: new Date(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      updateInfo: jest.fn(),
     });
 
     await expect(
@@ -123,21 +107,7 @@ describe('GetAllApplicationsUseCase', () => {
         updatedAt: new Date(),
       }),
     );
-    mockJobRepository.get.mockResolvedValue({
-      id: 'job-123',
-      companyId: 'company-123',
-      title: 'Job',
-      description: 'Desc',
-      location: 'Remote',
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+    mockJobRepository.get.mockResolvedValue(mockJobEntity);
     mockCompanyRepository.get.mockResolvedValue({
       id: 'company-123',
       ownerId: 'user-123',
@@ -145,9 +115,6 @@ describe('GetAllApplicationsUseCase', () => {
       recruiterIds: [],
       createdAt: new Date(),
       updatedAt: new Date(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      updateInfo: jest.fn(),
     });
     mockApplicationRepository.getAll.mockResolvedValue({
       data: applications,

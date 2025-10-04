@@ -5,7 +5,7 @@ import type {
 } from '~/core/company/company.repository';
 import { NotFoundException } from '~/core/errors/not-found';
 
-import { mockCompanyRepository } from '~/test/mocks/repositories';
+import { mockCompanyRepository } from '~/tests/mocks/repositories';
 
 import { UpdateCompanyUseCase } from './update-company.case';
 

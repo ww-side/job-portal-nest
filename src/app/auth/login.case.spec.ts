@@ -5,12 +5,12 @@ import type { TokenService } from '~/core/services/token-service';
 import { UserEntity } from '~/core/user/user.entity';
 import type { UserRepository } from '~/core/user/user.repository';
 
-import { mockUserRepository } from '~/test/mocks/repositories';
+import { mockUserRepository } from '~/tests/mocks/repositories';
 import {
   mockCacheService,
   mockHashService,
   mockTokenService,
-} from '~/test/mocks/services';
+} from '~/tests/mocks/services';
 
 import { LoginUserUseCase } from './login.case';
 

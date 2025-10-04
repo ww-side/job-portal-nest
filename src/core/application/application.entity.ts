@@ -22,18 +22,6 @@ export class ApplicationEntity {
   constructor(props: ApplicationEntityProps) {
     Object.assign(this, props);
   }
-
-  updateMessage(message: string) {
-    this.message = message;
-  }
-
-  updateCvUrl(cvUrl: string) {
-    this.cvUrl = cvUrl;
-  }
-
-  updateStatus(statusId: string) {
-    this.statusId = statusId;
-  }
 }
 
 export interface ApplicationStatusEntityProps {
@@ -47,9 +35,5 @@ export class ApplicationStatusEntity {
 
   constructor(props: ApplicationStatusEntityProps) {
     Object.assign(this, props);
-  }
-
-  updateName(name: string) {
-    this.name = name;
   }
 }

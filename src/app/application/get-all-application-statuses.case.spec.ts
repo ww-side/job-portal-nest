@@ -1,7 +1,7 @@
 import { ApplicationStatusEntity } from '~/core/application/application.entity';
 import { ApplicationStatusRepository } from '~/core/application/application.repository';
 
-import { mockApplicationStatusRepository } from '~/test/mocks/repositories';
+import { mockApplicationStatusRepository } from '~/tests/mocks/repositories';
 
 import { GetAllApplicationStatusesUseCase } from './get-all-application-statuses.case';
 

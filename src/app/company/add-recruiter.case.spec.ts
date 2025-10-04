@@ -3,7 +3,7 @@ import type { CompanyRepository } from '~/core/company/company.repository';
 import { ForbiddenException } from '~/core/errors/forbidden';
 import { NotFoundException } from '~/core/errors/not-found';
 
-import { mockCompanyRepository } from '~/test/mocks/repositories';
+import { mockCompanyRepository } from '~/tests/mocks/repositories';
 
 import { AddRecruiterUseCase } from './add-recruiter.case';
 

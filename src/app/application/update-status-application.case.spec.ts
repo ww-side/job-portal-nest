@@ -2,11 +2,12 @@ import { ForbiddenException, NotFoundException } from '@nestjs/common';
 
 import { ApplicationEntity } from '~/core/application/application.entity';
 
+import { mockJobEntity } from '~/tests/mocks/entities';
 import {
   mockApplicationRepository,
   mockCompanyRepository,
   mockJobRepository,
-} from '~/test/mocks/repositories';
+} from '~/tests/mocks/repositories';
 
 import { UpdateApplicationStatusUseCase } from './update-status-application.case';
 
@@ -23,6 +24,17 @@ describe('UpdateApplicationStatusUseCase', () => {
     jest.clearAllMocks();
   });
 
+  const mockApplication = {
+    id: 'app-1',
+    userId: 'user-123',
+    jobId: 'job-1',
+    message: 'Hello',
+    cvUrl: 'cv.pdf',
+    statusId: '1',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
   it('throws NotFoundException if application does not exist', async () => {
     mockApplicationRepository.get.mockResolvedValue(null);
 
@@ -36,18 +48,7 @@ describe('UpdateApplicationStatusUseCase', () => {
   });
 
   it('throws NotFoundException if job does not exist', async () => {
-    mockApplicationRepository.get.mockResolvedValue(
-      new ApplicationEntity({
-        id: 'app-1',
-        userId: 'user-123',
-        jobId: 'job-1',
-        message: 'Hello',
-        cvUrl: 'cv.pdf',
-        statusId: '1',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }),
-    );
+    mockApplicationRepository.get.mockResolvedValue(mockApplication);
     mockJobRepository.get.mockResolvedValue(null);
 
     await expect(
@@ -60,33 +61,8 @@ describe('UpdateApplicationStatusUseCase', () => {
   });
 
   it('throws NotFoundException if company does not exist', async () => {
-    mockApplicationRepository.get.mockResolvedValue(
-      new ApplicationEntity({
-        id: 'app-1',
-        userId: 'user-123',
-        jobId: 'job-1',
-        message: 'Hello',
-        cvUrl: 'cv.pdf',
-        statusId: '1',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }),
-    );
-    mockJobRepository.get.mockResolvedValue({
-      id: 'job-1',
-      companyId: 'company-1',
-      title: 'Job',
-      description: 'Desc',
-      location: 'Remote',
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+    mockApplicationRepository.get.mockResolvedValue(mockApplication);
+    mockJobRepository.get.mockResolvedValue(mockJobEntity);
     mockCompanyRepository.get.mockResolvedValue(null);
 
     await expect(
@@ -99,33 +75,8 @@ describe('UpdateApplicationStatusUseCase', () => {
   });
 
   it('throws ForbiddenException if current user is not company owner', async () => {
-    mockApplicationRepository.get.mockResolvedValue(
-      new ApplicationEntity({
-        id: 'app-1',
-        userId: 'user-123',
-        jobId: 'job-1',
-        message: 'Hello',
-        cvUrl: 'cv.pdf',
-        statusId: '1',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }),
-    );
-    mockJobRepository.get.mockResolvedValue({
-      id: 'job-1',
-      companyId: 'company-1',
-      title: 'Job',
-      description: 'Desc',
-      location: 'Remote',
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+    mockApplicationRepository.get.mockResolvedValue(mockApplication);
+    mockJobRepository.get.mockResolvedValue(mockJobEntity);
     mockCompanyRepository.get.mockResolvedValue({
       id: 'company-1',
       ownerId: 'owner-999',
@@ -133,9 +84,6 @@ describe('UpdateApplicationStatusUseCase', () => {
       recruiterIds: [],
       createdAt: new Date(),
       updatedAt: new Date(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      updateInfo: jest.fn(),
     });
 
     await expect(
@@ -160,21 +108,7 @@ describe('UpdateApplicationStatusUseCase', () => {
     });
 
     mockApplicationRepository.get.mockResolvedValue(application);
-    mockJobRepository.get.mockResolvedValue({
-      id: 'job-1',
-      companyId: 'company-1',
-      title: 'Job',
-      description: 'Desc',
-      location: 'Remote',
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+    mockJobRepository.get.mockResolvedValue(mockJobEntity);
     mockCompanyRepository.get.mockResolvedValue({
       id: 'company-1',
       ownerId: 'owner-123',
@@ -182,9 +116,6 @@ describe('UpdateApplicationStatusUseCase', () => {
       recruiterIds: [],
       createdAt: new Date(),
       updatedAt: new Date(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      updateInfo: jest.fn(),
     });
 
     mockApplicationRepository.update.mockImplementation(async (id, data) =>

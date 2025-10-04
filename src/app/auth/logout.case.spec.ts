@@ -2,7 +2,7 @@ import { UnauthorizedException } from '~/core/errors/unauthorized';
 import type { CacheService } from '~/core/services/cache-service';
 import type { TokenService } from '~/core/services/token-service';
 
-import { mockCacheService, mockTokenService } from '~/test/mocks/services';
+import { mockCacheService, mockTokenService } from '~/tests/mocks/services';
 
 import { LogoutUserUseCase } from './logout.case';
 

@@ -8,7 +8,7 @@ import {
   mockCacheService,
   mockHashService,
   mockTokenService,
-} from '~/test/mocks/services';
+} from '~/tests/mocks/services';
 
 import { RefreshTokenUseCase } from './refresh-token.case';
 

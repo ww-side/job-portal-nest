@@ -5,11 +5,11 @@ import { NotFoundException } from '~/core/errors/not-found';
 import { JobEntity } from '~/core/job/job.entity';
 import { JobRepository } from '~/core/job/job.repository';
 
-import { mockCompanyEntity } from '~/test/mocks/entities';
+import { mockCompanyEntity } from '~/tests/mocks/entities';
 import {
   mockCompanyRepository,
   mockJobRepository,
-} from '~/test/mocks/repositories';
+} from '~/tests/mocks/repositories';
 
 import { DeleteJobUseCase } from './delete-job.case';
 
@@ -41,9 +41,6 @@ describe('DeleteJobUseCase', () => {
     skills: ['React', 'Node.js'],
     createdAt: new Date(),
     updatedAt: new Date(),
-    updateInfo: jest.fn(),
-    addSkill: jest.fn(),
-    removeSkill: jest.fn(),
   };
 
   it('deletes a job successfully if user is owner', async () => {
