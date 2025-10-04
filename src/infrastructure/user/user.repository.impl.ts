@@ -7,7 +7,7 @@ import type {
 
 import type { DbService } from '~/framework/db/db.service';
 
-export class PrismaUserRepository implements UserRepository {
+export class UserRepositoryImpl implements UserRepository {
   constructor(private readonly db: DbService) {}
 
   async getByEmail(email: string) {

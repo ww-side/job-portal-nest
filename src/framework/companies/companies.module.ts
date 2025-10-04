@@ -13,7 +13,7 @@ import { UpdateCompanyUseCase } from '~/app/company/update-company.case';
 
 import { CompanyRepositoryImpl } from '~/infrastructure/company/company.repository.impl';
 import { TokenServiceImpl } from '~/infrastructure/services/token-service.impl';
-import { PrismaUserRepository } from '~/infrastructure/user/user.repository.impl';
+import { UserRepositoryImpl } from '~/infrastructure/user/user.repository.impl';
 
 import { DbModule } from '~/framework/db/db.module';
 import { DbService } from '~/framework/db/db.service';
@@ -33,8 +33,8 @@ import { CompaniesService } from './companies.service';
       useFactory: () => new TokenServiceImpl(),
     },
     {
-      provide: PrismaUserRepository,
-      useFactory: (db: DbService) => new PrismaUserRepository(db),
+      provide: UserRepositoryImpl,
+      useFactory: (db: DbService) => new UserRepositoryImpl(db),
       inject: [DbService],
     },
     {
@@ -46,7 +46,7 @@ import { CompaniesService } from './companies.service';
       provide: CreateCompanyUseCase,
       useFactory: (repo: CompanyRepository, userRepo: UserRepository) =>
         new CreateCompanyUseCase(repo, userRepo),
-      inject: [CompanyRepositoryImpl, PrismaUserRepository],
+      inject: [CompanyRepositoryImpl, UserRepositoryImpl],
     },
     {
       provide: UpdateCompanyUseCase,

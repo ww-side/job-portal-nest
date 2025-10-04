@@ -9,7 +9,7 @@ import { UpdateUserUseCase } from '~/app/user/update-user.case';
 
 import { HashServiceImpl } from '~/infrastructure/services/hash-service.impl';
 import { TokenServiceImpl } from '~/infrastructure/services/token-service.impl';
-import { PrismaUserRepository } from '~/infrastructure/user/user.repository.impl';
+import { UserRepositoryImpl } from '~/infrastructure/user/user.repository.impl';
 
 import { CacheServiceImpl } from '~/framework/cache/cache-service.impl';
 import { DbModule } from '~/framework/db/db.module';
@@ -26,8 +26,8 @@ import { UsersService } from './users.service';
     UsersService,
     JwtAuthGuard,
     {
-      provide: PrismaUserRepository,
-      useFactory: (db: DbService) => new PrismaUserRepository(db),
+      provide: UserRepositoryImpl,
+      useFactory: (db: DbService) => new UserRepositoryImpl(db),
       inject: [DbService],
     },
     {
@@ -45,22 +45,22 @@ import { UsersService } from './users.service';
     },
     {
       provide: CreateUserUseCase,
-      useFactory: (repo: PrismaUserRepository, hash: HashServiceImpl) =>
+      useFactory: (repo: UserRepositoryImpl, hash: HashServiceImpl) =>
         new CreateUserUseCase(repo, hash),
-      inject: [PrismaUserRepository, HashServiceImpl],
+      inject: [UserRepositoryImpl, HashServiceImpl],
     },
     {
       provide: UpdateUserUseCase,
-      useFactory: (repo: PrismaUserRepository, hash: HashServiceImpl) =>
+      useFactory: (repo: UserRepositoryImpl, hash: HashServiceImpl) =>
         new UpdateUserUseCase(repo, hash),
-      inject: [PrismaUserRepository, HashServiceImpl],
+      inject: [UserRepositoryImpl, HashServiceImpl],
     },
     {
       provide: DeleteUserUseCase,
-      useFactory: (repo: PrismaUserRepository) => new DeleteUserUseCase(repo),
-      inject: [PrismaUserRepository],
+      useFactory: (repo: UserRepositoryImpl) => new DeleteUserUseCase(repo),
+      inject: [UserRepositoryImpl],
     },
   ],
-  exports: [PrismaUserRepository],
+  exports: [UserRepositoryImpl],
 })
 export class UsersModule {}

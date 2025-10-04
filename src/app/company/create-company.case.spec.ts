@@ -34,7 +34,7 @@ describe('CreateCompanyUseCase', () => {
       ownerId: 'owner-123',
     };
 
-    userRepository.getByEmail.mockResolvedValue(
+    userRepository.get.mockResolvedValue(
       new UserEntity({
         id: 'owner-123',
         email: 'owner@example.com',

@@ -3,6 +3,7 @@ import * as redisStore from 'cache-manager-redis-store';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 
+import { ApplicationsModule } from '~/framework/applications/applications.module';
 import { AuthModule } from '~/framework/auth/auth.module';
 import { CompaniesModule } from '~/framework/companies/companies.module';
 import { DbModule } from '~/framework/db/db.module';
@@ -24,6 +25,7 @@ import { UsersModule } from '~/framework/users/users.module';
     AuthModule,
     CompaniesModule,
     JobsModule,
+    ApplicationsModule,
   ],
 })
 export class AppModule {}

@@ -23,7 +23,7 @@ export class CreateCompanyUseCase {
       throw new ConflictException('Owner already has a company');
     }
 
-    const user = await this.userRepository.getByEmail(data.ownerId);
+    const user = await this.userRepository.get(data.ownerId);
 
     if (user?.roleId !== EMPLOYER_ROLE_ID) {
       throw new ForbiddenException(
