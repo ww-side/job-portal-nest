@@ -9,7 +9,7 @@ import { RefreshTokenUseCase } from '~/app/auth/refresh-token.case';
 
 import { HashServiceImpl } from '~/infrastructure/services/hash-service.impl';
 import { TokenServiceImpl } from '~/infrastructure/services/token-service.impl';
-import { PrismaUserRepository } from '~/infrastructure/user/user.repository.impl';
+import { UserRepositoryImpl } from '~/infrastructure/user/user.repository.impl';
 
 import { CacheServiceImpl } from '~/framework/cache/cache-service.impl';
 import { DbModule } from '~/framework/db/db.module';
@@ -24,8 +24,8 @@ import { AuthService } from './auth.service';
   providers: [
     AuthService,
     {
-      provide: PrismaUserRepository,
-      useFactory: (db: DbService) => new PrismaUserRepository(db),
+      provide: UserRepositoryImpl,
+      useFactory: (db: DbService) => new UserRepositoryImpl(db),
       inject: [DbService],
     },
     {
@@ -50,13 +50,13 @@ import { AuthService } from './auth.service';
     {
       provide: LoginUserUseCase,
       useFactory: (
-        repo: PrismaUserRepository,
+        repo: UserRepositoryImpl,
         cache: CacheServiceImpl,
         tokenService: TokenServiceImpl,
         hash: HashServiceImpl,
       ) => new LoginUserUseCase(repo, cache, tokenService, hash),
       inject: [
-        PrismaUserRepository,
+        UserRepositoryImpl,
         CacheServiceImpl,
         TokenServiceImpl,
         HashServiceImpl,

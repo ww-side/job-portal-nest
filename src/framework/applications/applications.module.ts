@@ -23,7 +23,7 @@ import {
 import { CompanyRepositoryImpl } from '~/infrastructure/company/company.repository.impl';
 import { JobRepositoryImpl } from '~/infrastructure/job/job.repository.impl';
 import { TokenServiceImpl } from '~/infrastructure/services/token-service.impl';
-import { PrismaUserRepository } from '~/infrastructure/user/user.repository.impl';
+import { UserRepositoryImpl } from '~/infrastructure/user/user.repository.impl';
 
 import { DbModule } from '~/framework/db/db.module';
 import { JwtAuthGuard } from '~/framework/shared/guards/jwt-auth';
@@ -44,8 +44,8 @@ import { ApplicationsService } from './applications.service';
       useFactory: () => new TokenServiceImpl(),
     },
     {
-      provide: PrismaUserRepository,
-      useFactory: (db: DbService) => new PrismaUserRepository(db),
+      provide: UserRepositoryImpl,
+      useFactory: (db: DbService) => new UserRepositoryImpl(db),
       inject: [DbService],
     },
     {
@@ -72,7 +72,7 @@ import { ApplicationsService } from './applications.service';
       ) => new CreateApplicationUseCase(repo, userRepo, jobRepo),
       inject: [
         ApplicationRepositoryImpl,
-        PrismaUserRepository,
+        UserRepositoryImpl,
         JobRepositoryImpl,
       ],
     },
@@ -94,7 +94,7 @@ import { ApplicationsService } from './applications.service';
         ApplicationRepositoryImpl,
         JobRepositoryImpl,
         CompanyRepositoryImpl,
-        PrismaUserRepository,
+        UserRepositoryImpl,
       ],
     },
     {
@@ -109,7 +109,7 @@ import { ApplicationsService } from './applications.service';
         ApplicationRepositoryImpl,
         JobRepositoryImpl,
         CompanyRepositoryImpl,
-        PrismaUserRepository,
+        UserRepositoryImpl,
       ],
     },
     {
