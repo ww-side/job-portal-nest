@@ -2,11 +2,12 @@ import { ForbiddenException, NotFoundException } from '@nestjs/common';
 
 import { ApplicationEntity } from '~/core/application/application.entity';
 
+import { mockJobEntity } from '~/tests/mocks/entities';
 import {
   mockApplicationRepository,
   mockCompanyRepository,
   mockJobRepository,
-} from '~/test/mocks/repositories';
+} from '~/tests/mocks/repositories';
 
 import { UpdateApplicationUseCase } from './update-application.case';
 
@@ -74,21 +75,7 @@ describe('UpdateApplicationUseCase', () => {
         updatedAt: new Date(),
       }),
     );
-    mockJobRepository.get.mockResolvedValue({
-      id: 'job-1',
-      companyId: 'company-1',
-      title: 'Job',
-      description: 'Desc',
-      location: 'Remote',
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+    mockJobRepository.get.mockResolvedValue(mockJobEntity);
     mockCompanyRepository.get.mockResolvedValue(null);
 
     await expect(
@@ -114,21 +101,7 @@ describe('UpdateApplicationUseCase', () => {
         updatedAt: new Date(),
       }),
     );
-    mockJobRepository.get.mockResolvedValue({
-      id: 'job-1',
-      companyId: 'company-1',
-      title: 'Job',
-      description: 'Desc',
-      location: 'Remote',
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+    mockJobRepository.get.mockResolvedValue(mockJobEntity);
     mockCompanyRepository.get.mockResolvedValue({
       id: 'company-1',
       name: 'Company',
@@ -136,9 +109,6 @@ describe('UpdateApplicationUseCase', () => {
       recruiterIds: [],
       createdAt: new Date(),
       updatedAt: new Date(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      updateInfo: jest.fn(),
     });
 
     await expect(
@@ -164,18 +134,12 @@ describe('UpdateApplicationUseCase', () => {
         updatedAt: new Date(),
       }),
     );
-    mockJobRepository.get.mockResolvedValue({
-      id: 'job-1',
-      companyId: 'company-1',
-      title: 'Job',
-      description: 'Desc',
-      location: 'Remote',
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
+    mockJobRepository.get.mockResolvedValue(mockJobEntity);
+    mockCompanyRepository.get.mockResolvedValue({
+      id: 'company-1',
+      name: 'Company',
+      ownerId: 'owner-123',
+      recruiterIds: [],
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -186,9 +150,6 @@ describe('UpdateApplicationUseCase', () => {
       recruiterIds: [],
       createdAt: new Date(),
       updatedAt: new Date(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      updateInfo: jest.fn(),
     });
 
     await expect(
@@ -223,9 +184,6 @@ describe('UpdateApplicationUseCase', () => {
       statusId: '1',
       typeId: '2',
       skills: ['React', 'Node.js'],
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -236,9 +194,6 @@ describe('UpdateApplicationUseCase', () => {
       recruiterIds: [],
       createdAt: new Date(),
       updatedAt: new Date(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      updateInfo: jest.fn(),
     });
 
     mockApplicationRepository.update.mockImplementation(async (id, data) =>

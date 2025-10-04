@@ -1,8 +1,8 @@
 import { CompanyRepository } from '~/core/company/company.repository';
 import { NotFoundException } from '~/core/errors/not-found';
 
-import { mockCompanyEntity } from '~/test/mocks/entities';
-import { mockCompanyRepository } from '~/test/mocks/repositories';
+import { mockCompanyEntity } from '~/tests/mocks/entities';
+import { mockCompanyRepository } from '~/tests/mocks/repositories';
 
 import { GetCompanyUseCase } from './get-company.case';
 

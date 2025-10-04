@@ -1,6 +1,6 @@
 import { JobEntity } from '~/core/job/job.entity';
 
-import { mockJobRepository } from '~/test/mocks/repositories';
+import { mockJobRepository } from '~/tests/mocks/repositories';
 
 import { GetJobsUseCase } from './get-jobs.case';
 

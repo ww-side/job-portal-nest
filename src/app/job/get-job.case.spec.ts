@@ -6,7 +6,7 @@ import { JobRepository } from '~/core/job/job.repository';
 import {
   mockCompanyRepository,
   mockJobRepository,
-} from '~/test/mocks/repositories';
+} from '~/tests/mocks/repositories';
 
 import { GetJobUseCase } from './get-job.case';
 
@@ -39,9 +39,6 @@ describe('GetJobUseCase', () => {
       skills: ['Node.js'],
       createdAt: new Date(),
       updatedAt: new Date(),
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
     };
 
     const company = {
@@ -51,9 +48,6 @@ describe('GetJobUseCase', () => {
       recruiterIds: [],
       createdAt: new Date(),
       updatedAt: new Date(),
-      addRecruiter: jest.fn(),
-      removeRecruiter: jest.fn(),
-      updateInfo: jest.fn(),
     };
 
     jobRepository.get.mockResolvedValue(job);
@@ -92,9 +86,6 @@ describe('GetJobUseCase', () => {
       skills: ['Node.js'],
       createdAt: new Date(),
       updatedAt: new Date(),
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
     };
 
     jobRepository.get.mockResolvedValue(job);

@@ -31,22 +31,4 @@ export class JobEntity {
     Object.assign(this, props);
     this.skills = props.skills ?? [];
   }
-
-  updateInfo(
-    data: Partial<
-      Omit<JobEntityProps, 'id' | 'companyId' | 'createdAt' | 'updatedAt'>
-    >,
-  ) {
-    Object.assign(this, data);
-  }
-
-  addSkill(skill: string) {
-    if (!this.skills.includes(skill)) {
-      this.skills.push(skill);
-    }
-  }
-
-  removeSkill(skill: string) {
-    this.skills = this.skills.filter((s) => s !== skill);
-  }
 }

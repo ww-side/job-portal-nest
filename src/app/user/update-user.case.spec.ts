@@ -4,8 +4,8 @@ import type { HashService } from '~/core/services/hash-service';
 import { UserEntity } from '~/core/user/user.entity';
 import type { UserRepository } from '~/core/user/user.repository';
 
-import { mockUserRepository } from '~/test/mocks/repositories';
-import { mockHashService } from '~/test/mocks/services';
+import { mockUserRepository } from '~/tests/mocks/repositories';
+import { mockHashService } from '~/tests/mocks/services';
 
 import { UpdateUserUseCase } from './update-user.case';
 

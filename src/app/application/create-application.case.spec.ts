@@ -6,14 +6,14 @@ import {
   CreateApplicationData,
 } from '~/core/application/application.repository';
 import { JobRepository } from '~/core/job/job.repository';
-import { UserEntity } from '~/core/user/user.entity';
 import { UserRepository } from '~/core/user/user.repository';
 
+import { mockJobEntity } from '~/tests/mocks/entities';
 import {
   mockApplicationRepository,
   mockJobRepository,
   mockUserRepository,
-} from '~/test/mocks/repositories';
+} from '~/tests/mocks/repositories';
 
 import { CreateApplicationUseCase } from './create-application.case';
 
@@ -35,6 +35,18 @@ describe('CreateApplicationUseCase', () => {
     );
   });
 
+  const mockUser = {
+    id: 'user-123',
+    email: 'user@example.com',
+    firstName: 'John',
+    lastName: 'Doe',
+    roleId: 1,
+    isBanned: false,
+    password: 'hashedPassword',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
   it('creates a new application if user and job exist and user has not applied yet', async () => {
     const data: CreateApplicationData = {
       userId: 'user-123',
@@ -44,37 +56,9 @@ describe('CreateApplicationUseCase', () => {
       statusId: '1',
     };
 
-    userRepository.get.mockResolvedValue(
-      new UserEntity({
-        id: 'user-123',
-        email: 'user@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        roleId: 1,
-        isBanned: false,
-        password: 'hashedPassword',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }),
-    );
+    userRepository.get.mockResolvedValue(mockUser);
 
-    jobRepository.get.mockResolvedValue({
-      id: 'job-123',
-      companyId: 'company-123',
-      title: 'Software Engineer',
-      description: 'Job description',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      location: 'Remote',
-      salaryMin: 5000,
-      salaryMax: 8000,
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-    });
+    jobRepository.get.mockResolvedValue(mockJobEntity);
 
     applicationRepository.getAll.mockResolvedValue({
       data: [],
@@ -130,19 +114,7 @@ describe('CreateApplicationUseCase', () => {
       statusId: '1',
     };
 
-    userRepository.get.mockResolvedValue(
-      new UserEntity({
-        id: 'user-123',
-        email: 'user@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        roleId: 1,
-        isBanned: false,
-        password: 'hashedPassword',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }),
-    );
+    userRepository.get.mockResolvedValue(mockUser);
 
     jobRepository.get.mockResolvedValue(null);
 
@@ -158,37 +130,9 @@ describe('CreateApplicationUseCase', () => {
       statusId: '1',
     };
 
-    userRepository.get.mockResolvedValue(
-      new UserEntity({
-        id: 'user-123',
-        email: 'user@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        roleId: 1,
-        isBanned: true,
-        password: 'hashedPassword',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }),
-    );
+    userRepository.get.mockResolvedValue({ ...mockUser, isBanned: true });
 
-    jobRepository.get.mockResolvedValue({
-      id: 'job-123',
-      companyId: 'company-123',
-      title: 'Job',
-      description: 'Desc',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      location: 'Remote',
-      salaryMin: 5000,
-      salaryMax: 8000,
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-    });
+    jobRepository.get.mockResolvedValue(mockJobEntity);
 
     await expect(useCase.execute(data)).rejects.toThrow(ForbiddenException);
     expect(applicationRepository.create.mock.calls).toHaveLength(0);
@@ -202,37 +146,9 @@ describe('CreateApplicationUseCase', () => {
       statusId: '1',
     };
 
-    userRepository.get.mockResolvedValue(
-      new UserEntity({
-        id: 'user-123',
-        email: 'user@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        roleId: 1,
-        isBanned: false,
-        password: 'hashedPassword',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }),
-    );
+    userRepository.get.mockResolvedValue(mockUser);
 
-    jobRepository.get.mockResolvedValue({
-      id: 'job-123',
-      companyId: 'company-123',
-      title: 'Job',
-      description: 'Desc',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      location: 'Remote',
-      salaryMin: 5000,
-      salaryMax: 8000,
-      statusId: '1',
-      typeId: '2',
-      skills: ['React', 'Node.js'],
-      updateInfo: jest.fn(),
-      addSkill: jest.fn(),
-      removeSkill: jest.fn(),
-    });
+    jobRepository.get.mockResolvedValue(mockJobEntity);
 
     applicationRepository.getAll.mockResolvedValue({
       data: [

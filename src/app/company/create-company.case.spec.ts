@@ -12,7 +12,7 @@ import { EMPLOYER_ROLE_ID } from '~/app/config/roles';
 import {
   mockCompanyRepository,
   mockUserRepository,
-} from '~/test/mocks/repositories';
+} from '~/tests/mocks/repositories';
 
 import { CreateCompanyUseCase } from './create-company.case';
 

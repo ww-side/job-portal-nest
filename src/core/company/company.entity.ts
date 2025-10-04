@@ -25,22 +25,4 @@ export class CompanyEntity {
     Object.assign(this, props);
     this.recruiterIds = props.recruiterIds ?? [];
   }
-
-  addRecruiter(userId: string) {
-    if (!this.recruiterIds.includes(userId)) {
-      this.recruiterIds.push(userId);
-    }
-  }
-
-  removeRecruiter(userId: string) {
-    this.recruiterIds = this.recruiterIds.filter((id) => id !== userId);
-  }
-
-  updateInfo(
-    data: Partial<
-      Omit<CompanyEntityProps, 'id' | 'ownerId' | 'createdAt' | 'updatedAt'>
-    >,
-  ) {
-    Object.assign(this, data);
-  }
 }

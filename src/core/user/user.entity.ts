@@ -26,8 +26,4 @@ export class UserEntity {
   constructor(props: UserEntityProps) {
     Object.assign(this, props);
   }
-
-  ban() {
-    this.isBanned = true;
-  }
 }
