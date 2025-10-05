@@ -1,12 +1,28 @@
-version: '3.9'
-
 services:
+  app:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=myuser
+      - DB_PASSWORD=mypassword
+      - DB_NAME=mydb
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    command: sh -c "npm install -g pnpm && pnpm install && pnpm run start"
+
   postgres:
     image: postgres:15
     container_name: postgres
     restart: always
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
