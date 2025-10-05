@@ -11,6 +11,7 @@ The main goal is to build a job portal system while keeping layers separated and
 - **Database:** [PostgreSQL](https://www.postgresql.org/)
 - **ORM:** [Prisma](https://www.prisma.io/)
 - **Containerization:** [Docker](https://www.docker.com/)
+- **Caching / Queue:** [Redis](https://redis.io/)
 - **Testing:** Unit tests for the **app** layer (using Jest)
 
 ---
